@@ -1,0 +1,795 @@
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Submission, Review, FAQItem } from "./types";
+import { FAQ_DATA, REVIEWS_DATA, PARTNERS_DATA } from "./data";
+
+// Sub-components
+import Header from "./components/Header";
+import HolographicPlant from "./components/HolographicPlant";
+import AiConsultant from "./components/AiConsultant";
+import RealityShow from "./components/RealityShow";
+import FormSection from "./components/FormSection";
+
+// Icons
+import {
+  ChevronDown,
+  Cpu,
+  Dog,
+  Brain,
+  Sparkles,
+  Award,
+  Zap,
+  CheckCircle,
+  HelpCircle,
+  TrendingUp,
+  Flame,
+  Milestone,
+  X,
+  Database,
+  Users,
+  Video,
+  Play,
+  Volume2,
+  Heart,
+  Eye
+} from "lucide-react";
+
+const TRACK_GALLERIES = [
+  {
+    id: 1,
+    title: "Программируй роботов",
+    subtitle: "Роботы и Манипуляторы в действии",
+    items: [
+      {
+        type: "video",
+        url: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Тестирование захвата манипулятора",
+        desc: "Программирование деликатного захвата для сортировки хрупкой продукции на сыроварне.",
+        likes: "1.2k",
+        views: "14.5k"
+      },
+      {
+        type: "photo",
+        url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Калибровка датчиков давления",
+        desc: "Точность до миллиметра при взаимодействии робота с сырными головками.",
+        likes: "945",
+        views: "8.2k"
+      },
+      {
+        type: "video",
+        url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Автоматический обход конвейера",
+        desc: "Интеграция роборуки с лентой подачи готовой продукции.",
+        likes: "2.1k",
+        views: "22.0k"
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "«Дрессируй» Unitree Go2",
+    subtitle: "Испытания четвероногих на ферме",
+    items: [
+      {
+        type: "video",
+        url: "https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Обход территории коровника",
+        desc: "Unitree Go2 патрулирует Истринскую ферму, собирая данные о температуре и влажности.",
+        likes: "3.4k",
+        views: "45.1k"
+      },
+      {
+        type: "photo",
+        url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Преодоление препятствий на поле",
+        desc: "Программирование алгоритмов стабилизации на сложной каменистой почве.",
+        likes: "1.8k",
+        views: "19.3k"
+      },
+      {
+        type: "video",
+        url: "https://images.unsplash.com/photo-1531746790731-6c087fecd05a?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Синхронный танец робособак",
+        desc: "Душевные вечерние тесты робособак у костра — любимое шоу участников.",
+        likes: "4.7k",
+        views: "58.9k"
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Обучай нейросети",
+    subtitle: "АгроИИ и компьютерное зрение",
+    items: [
+      {
+        type: "video",
+        url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Распознавание зерна в реальном времени",
+        desc: "Обученная модель за миллисекунды классифицирует сорт и влажность пшеницы по фото.",
+        likes: "2.8k",
+        views: "33.2k"
+      },
+      {
+        type: "photo",
+        url: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Анализ зрелости колосьев",
+        desc: "Сбор датасета пшеницы на полях Подмосковья для предобучения ИИ-моделей.",
+        likes: "1.1k",
+        views: "11.6k"
+      },
+      {
+        type: "video",
+        url: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=600&h=1000&q=80",
+        title: "Тепловая карта здоровья посевов",
+        desc: "Обработка снимков со спутника для составления точных карт полива.",
+        likes: "3.2k",
+        views: "38.5k"
+      }
+    ]
+  }
+];
+
+function VerticalReelTicker({ items }: { items: any[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % items.length);
+    }, 3000); // Switch every 3 seconds
+    return () => clearInterval(timer);
+  }, [items.length]);
+
+  const currentItem = items[activeIndex];
+
+  return (
+    <div className="relative aspect-[9/16] h-[220px] w-auto overflow-hidden rounded-2xl bg-black/40 border border-[#E8E6D9]/10 mt-3 flex items-center justify-center mx-auto">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -30 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="absolute inset-0 w-full h-full flex flex-col justify-between p-4"
+        >
+          {/* Background Image Preview */}
+          <div className="absolute inset-0">
+            <img
+              src={currentItem.url}
+              alt=""
+              className="w-full h-full object-cover opacity-50"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" />
+          </div>
+
+          {/* Top Tag & Info */}
+          <div className="relative z-10 flex justify-between items-center w-full">
+            <span className="font-mono text-[7px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">
+              {currentItem.type === "video" ? "VIDEO REEL" : "PHOTO SPOT"}
+            </span>
+            <div className="flex items-center gap-1 text-[9px] text-white/80 font-mono">
+              <span className="flex items-center gap-0.5">
+                <Heart className="w-2.5 h-2.5 text-red-500 fill-red-500" />
+                {currentItem.likes}
+              </span>
+            </div>
+          </div>
+
+          {/* Play Icon Indicator Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white shadow-lg">
+              {currentItem.type === "video" ? (
+                <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5 text-[#D4DE72]" />
+              )}
+            </div>
+          </div>
+
+          {/* Bottom Title & Description */}
+          <div className="relative z-10 text-left">
+            <h4 className="font-serif italic text-xs text-white leading-tight mb-0.5 truncate">
+              {currentItem.title}
+            </h4>
+            <p className="text-[9px] text-[#DAD7CD]/80 font-sans line-clamp-1 leading-normal">
+              {currentItem.desc}
+            </p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function App() {
+  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [activeFaq, setActiveFaq] = useState<string | null>("faq-1");
+  const [expandedTrack, setExpandedTrack] = useState<number | null>(null);
+  const [activeReelIndex, setActiveReelIndex] = useState(0);
+
+  // Reset active reel when modal track changes
+  useEffect(() => {
+    setActiveReelIndex(0);
+  }, [expandedTrack]);
+
+  // Section Refs for smooth scrolling
+  const whyRef = useRef<HTMLDivElement>(null);
+  const tracksRef = useRef<HTMLDivElement>(null);
+  const faqRef = useRef<HTMLDivElement>(null);
+
+  // Load initial submissions from Express API on mount
+  useEffect(() => {
+    fetch("/api/submissions")
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then((data) => setSubmissions(data))
+      .catch((err) => {
+        console.error("Could not fetch submissions, using default fallback seed data.", err);
+        // Fallback seed data if backend is still starting up
+        setSubmissions([
+          {
+            id: "seed-1",
+            name: "Игорь К.",
+            role: "Разработчик ИИ",
+            track: "ИИ и Нейросети",
+            timestamp: "2 мин. назад"
+          },
+          {
+            id: "seed-2",
+            name: "Дарья П.",
+            role: "Инженер-робототехник",
+            track: "Роботы и Манипуляторы",
+            timestamp: "15 мин. назад"
+          }
+        ]);
+      });
+  }, []);
+
+  const handleAddSubmission = (newSub: Submission) => {
+    setSubmissions((prev) => [newSub, ...prev]);
+  };
+
+  const handleScrollToForm = () => {
+    const link = document.createElement("a");
+    link.href = "https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.click();
+  };
+
+  const handleScrollToSection = (sectionId: string) => {
+    let targetRef: React.RefObject<HTMLDivElement | null> | null = null;
+    if (sectionId === "why-section") targetRef = whyRef;
+    else if (sectionId === "tracks-section") targetRef = tracksRef;
+    else if (sectionId === "faq-section") targetRef = faqRef;
+
+    if (targetRef && targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0F1108] text-[#E8E6D9] font-sans overflow-x-clip selection:bg-[#A3B18A]/30 selection:text-[#E8E6D9]">
+      
+      {/* 2. Navigation Header */}
+      <Header
+        onScrollToForm={handleScrollToForm}
+        onScrollToSection={handleScrollToSection}
+        submissionsCount={submissions.length}
+      />
+
+      {/* 3. Hero Section (Opener) */}
+      <section
+        className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-[5px] px-6 md:px-12 lg:px-24 border-none bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(to bottom, rgba(15, 17, 8, 0) 0%, rgba(15, 17, 8, 0.1) 40%, rgba(27, 48, 34, 0.6) 80%, #1B3022 100%), url('${import.meta.env.BASE_URL}assets/farm_bg.jpeg'), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1800&q=80')`
+        }}
+      >
+        <div className="relative z-20 max-w-5xl">
+          
+          {/* Heavy Modern Display Heading */}
+          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#E8E6D9]">
+            АГРОХАБ 2026 <br />
+            <span className="text-4xl sm:text-6xl md:text-[72px] block mt-4 text-[#E8E6D9] font-sans font-black uppercase tracking-tighter leading-[0.85]">
+              на сыроварне Олега Сироты
+            </span>
+          </h1>
+
+          <div className="max-w-2xl mb-8">
+            <p className="font-serif italic text-xl sm:text-2xl text-[#D4DE72] mb-3 leading-relaxed">
+              Отдохни за делом.
+            </p>
+            <p className="text-sm sm:text-base text-[#E8E6D9] leading-relaxed font-sans font-medium drop-shadow-sm">
+              Программируй роботов, дрессируй робособак, обучай нейросети прямо на действующей сыроварне в Истре.
+            </p>
+          </div>
+
+          {/* Core Call-to-Actions */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-14">
+            <a
+              href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-4 px-8 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-xs tracking-widest rounded-full hover:bg-white hover:scale-[1.02] transition-all cursor-pointer text-center inline-block"
+            >
+              ПОДАТЬ ЗАЯВКУ
+            </a>
+            <button
+              onClick={() => handleScrollToSection("tracks-section")}
+              className="py-4 px-8 bg-transparent border border-[#E8E6D9]/30 hover:border-[#E8E6D9]/60 hover:bg-[#E8E6D9]/5 text-[#E8E6D9] font-semibold uppercase text-xs tracking-widest rounded-full transition-all cursor-pointer text-center"
+            >
+              Что внутри
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Why Section (Польза от участия в лагере) */}
+      <section
+        id="why-section"
+        ref={whyRef}
+        className="relative pt-[5px] pb-0 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022] to-[#0F1108] overflow-hidden w-full"
+      >
+        <div className="max-w-7xl mx-auto w-full relative z-10">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7 }}
+            className="font-serif italic text-3xl md:text-5xl text-[#DAD7CD] mb-[5px] text-center md:text-left"
+          >
+            Польза от участия в лагере
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[5px] max-w-4xl mx-auto">
+            {/* Left Column */}
+            <div className="flex flex-col gap-[5px]">
+              {/* Card 1 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+              >
+                <div className="space-y-2">
+                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Реальные данные с первого дня</h3>
+                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
+                    Сам строишь пайплайны сбора данных, сам разрабатываешь, анализируешь и тестируешь прямо на Истринской сыроварне.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Card 2 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+              >
+                <div className="space-y-2">
+                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Дорогое производственное оборудование</h3>
+                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
+                    Манипуляторы, робособаки Unitree Go2, нейросети. Сразу получаешь доступ к технике и наставникам.
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Column (Offset Downward like in the screenshot) */}
+            <div className="flex flex-col gap-[5px] md:mt-[40px]">
+              {/* Card 3 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+              >
+                <div className="space-y-2">
+                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Душевные моменты</h3>
+                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
+                    Твой код и твой рассвет в коровнике увидят тысячи зрителей, а тебе точно будет что рассказать. Костёр по вечерам гарантируем.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Card 4 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+              >
+                <div className="space-y-2">
+                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Связи на всю жизнь</h3>
+                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
+                    Студенты аграрных и технических вузов, инженеры, IT-специалисты и робототехники со всей страны.
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* ПОДАТЬ ЗАЯВКУ Button after this block, centered between bottom card and end of slide */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="pt-16 pb-16 flex justify-center"
+          >
+            <a
+              href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-4 px-10 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-xs tracking-widest rounded-full hover:bg-white hover:scale-[1.05] transition-all cursor-pointer text-center inline-block shadow-lg"
+            >
+              ПОДАТЬ ЗАЯВКУ
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 5. Directions/Tracks Section */}
+      <section
+        id="tracks-section"
+        ref={tracksRef}
+        className="relative z-20 pt-[5px] pb-16 px-6 md:px-12 lg:px-24 border-b border-[#E8E6D9]/10 bg-gradient-to-b from-[#0F1108] to-[#0a0b05] overflow-hidden"
+      >
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-12">
+            <h2 className="font-sans font-black uppercase text-3xl sm:text-5xl md:text-[60px] tracking-tighter leading-[0.85] text-[#E8E6D9] mb-4">
+              Три направления. <br className="sm:hidden" /> Одна смена.
+            </h2>
+            <p className="text-xs md:text-sm text-[#E8E6D9]/90 leading-relaxed font-sans font-medium">
+              Участники делятся на команды и работают над тремя типами задач, чтобы сделать агросектор умнее, точнее и эффективнее.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Track 1: Robots */}
+            <div 
+              onClick={() => setExpandedTrack(1)}
+              className="bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#A3B18A]/40 transition-all group duration-300 shadow-xl"
+            >
+              <div>
+                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Роботы</h3>
+              </div>
+              <VerticalReelTicker items={TRACK_GALLERIES[0].items} />
+            </div>
+
+            {/* Track 2: Robodogs */}
+            <div 
+              onClick={() => setExpandedTrack(2)}
+              className="bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#D4DE72]/40 transition-all group duration-300 shadow-xl"
+            >
+              <div>
+                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Робособаки</h3>
+              </div>
+              <VerticalReelTicker items={TRACK_GALLERIES[1].items} />
+            </div>
+
+            {/* Track 3: AI & Neural Networks */}
+            <div 
+              onClick={() => setExpandedTrack(3)}
+              className="bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-emerald-500/40 transition-all group duration-300 shadow-xl"
+            >
+              <div>
+                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Нейросети</h3>
+              </div>
+              <VerticalReelTicker items={TRACK_GALLERIES[2].items} />
+            </div>
+          </div>
+
+          {/* ПОДАТЬ ЗАЯВКУ Button after this block, centered on the third slide */}
+          <div className="mt-16 flex justify-center">
+            <a
+              href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-4 px-10 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-xs tracking-widest rounded-full hover:bg-white hover:scale-[1.05] transition-all cursor-pointer text-center inline-block shadow-lg"
+            >
+              ПОДАТЬ ЗАЯВКУ
+            </a>
+          </div>
+        </div>
+      </section>
+
+        {/* 11. FAQ Accordion Section */}
+        <section
+          id="faq-section"
+          ref={faqRef}
+          className="relative pt-[5px] pb-12 px-6 md:px-12 lg:px-24 bg-cover bg-center bg-no-repeat overflow-hidden"
+          style={{
+            backgroundImage: `linear-gradient(to bottom, #0a0b05 0%, rgba(15, 17, 8, 0.75) 50%, rgba(15, 17, 8, 0.9) 100%), url('${import.meta.env.BASE_URL}assets/2026-07-19 21.05.14.jpg')`
+          }}
+        >
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h3 className="font-serif italic text-3xl md:text-4xl text-[#DAD7CD]">
+              Частые вопросы участников
+            </h3>
+          </div>
+
+          <div className="space-y-4">
+            {FAQ_DATA.map((item) => {
+              const isOpen = activeFaq === item.id;
+              return (
+                <div
+                  key={item.id}
+                  className="bg-[#344E41]/10 border border-[#E8E6D9]/10 rounded-2xl overflow-hidden transition-all"
+                >
+                  <button
+                    onClick={() => setActiveFaq(isOpen ? null : item.id)}
+                    className="w-full p-5 text-left flex justify-between items-center hover:bg-[#344E41]/20 transition-all cursor-pointer"
+                  >
+                    <span className="font-serif italic text-sm sm:text-base text-[#E8E6D9]">
+                      {item.question}
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-[#A3B18A] transition-transform duration-300 ${
+                        isOpen ? "transform rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-5 pt-0 border-t border-[#E8E6D9]/5 text-xs sm:text-sm text-[#E8E6D9]/75 leading-relaxed font-sans">
+                          {item.answer}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ПОДАТЬ ЗАЯВКУ Button after this block */}
+          <div className="mt-12 flex justify-center">
+            <a
+              href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-4 px-10 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-xs tracking-widest rounded-full hover:bg-white hover:scale-[1.05] transition-all cursor-pointer text-center inline-block shadow-lg"
+            >
+              ПОДАТЬ ЗАЯВКУ
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 12. Footer */}
+      <footer className="pt-[5px] pb-[5px] px-6 md:px-12 lg:px-24 bg-[#0F1108] border-t border-[#E8E6D9]/10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-3">
+            <img
+              src={`${import.meta.env.BASE_URL}assets/logo.png`}
+              className="w-9 h-9 object-contain"
+              alt="Logo"
+              referrerPolicy="no-referrer"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+            />
+            <div>
+              <span className="font-serif italic text-sm text-[#E8E6D9] block leading-none">
+                Агрохаб 2026
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-6 text-[10px] uppercase tracking-widest font-mono text-[#E8E6D9]/40">
+            <span>© 2026 AgroHub Lab. Все права защищены.</span>
+          </div>
+        </div>
+      </footer>
+
+      {/* 13. Interactive Media Gallery Modal */}
+      <AnimatePresence>
+        {expandedTrack !== null && (() => {
+          const gallery = TRACK_GALLERIES.find(g => g.id === expandedTrack);
+          if (!gallery) return null;
+          const currentItem = gallery.items[activeReelIndex] || gallery.items[0];
+          return (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-[#0F1108]/95 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-6"
+              onClick={() => setExpandedTrack(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 350 }}
+                className="relative max-w-4xl w-full bg-[#12140D] border border-[#E8E6D9]/15 rounded-3xl overflow-hidden flex flex-col md:flex-row h-[85vh] md:h-[75vh] shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Left side: Track Info */}
+                <div className="w-full md:w-2/5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[#E8E6D9]/10 flex flex-col justify-between bg-[#1B3022]/10 shrink-0">
+                  <div className="space-y-4">
+                    <h3 className="font-serif italic text-3xl text-[#E8E6D9] leading-tight">
+                      {gallery.title}
+                    </h3>
+                    <div className="space-y-2 pt-4 border-t border-[#E8E6D9]/10">
+                      <p className="text-xs font-mono text-[#D4DE72] uppercase tracking-wider font-semibold">
+                        {currentItem.title}
+                      </p>
+                      <p className="text-xs sm:text-sm text-[#E8E6D9]/75 leading-relaxed font-sans">
+                        {currentItem.desc}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-3">
+                    <a
+                      href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 px-6 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-[10px] tracking-widest rounded-full hover:bg-white transition-all cursor-pointer text-center block shadow-md"
+                    >
+                      ПОДАТЬ ЗАЯВКУ
+                    </a>
+                    <button
+                      onClick={() => setExpandedTrack(null)}
+                      className="w-full py-3 px-6 bg-transparent border border-[#E8E6D9]/20 hover:border-[#E8E6D9]/40 text-[#E8E6D9] font-semibold uppercase text-[10px] tracking-widest rounded-full transition-all cursor-pointer text-center block"
+                    >
+                      Закрыть галерею
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right side: Interactive Reels Player with Vertical Feed */}
+                <div className="w-full md:w-3/5 flex flex-row h-full bg-[#080905]/95 overflow-hidden relative">
+                  {/* Main Active Reel Player (takes remaining width) */}
+                  <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden h-full">
+                    <AnimatePresence mode="wait">
+                      {(() => {
+                        if (!currentItem) return null;
+                        return (
+                          <motion.div
+                            key={activeReelIndex}
+                            initial={{ opacity: 0, y: 150 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -150 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 180 }}
+                            className="relative aspect-[9/16] h-[95%] max-h-[460px] w-auto mx-auto rounded-2xl overflow-hidden bg-black border border-[#E8E6D9]/15 shadow-2xl group flex flex-col justify-end"
+                          >
+                            {/* Reel Visual (Image/Video Proxy) */}
+                            <img 
+                              src={currentItem.url} 
+                              className="absolute inset-0 w-full h-full object-cover" 
+                              alt={currentItem.title}
+                              referrerPolicy="no-referrer"
+                            />
+                            
+                            {/* Vignette */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/50 pointer-events-none" />
+
+                            {/* Top Badges */}
+                            <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
+                              <span className="font-mono text-[8px] bg-black/60 text-[#DAD7CD] px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1">
+                                {currentItem.type === "video" ? <Video className="w-2.5 h-2.5 text-emerald-400" /> : <Sparkles className="w-2.5 h-2.5 text-[#D4DE72]" />}
+                                {currentItem.type === "video" ? "VIDEO REEL" : "PHOTO SPOT"}
+                              </span>
+                              
+                              {currentItem.type === "video" && (
+                                <div className="w-6 h-6 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white">
+                                  <Volume2 className="w-3 h-3 text-[#A3B18A] animate-pulse" />
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Play overlay */}
+                            {currentItem.type === "video" && (
+                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                                <div className="w-12 h-12 rounded-full bg-white/25 backdrop-blur-md border border-white/40 flex items-center justify-center text-white transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                  <Play className="w-5 h-5 fill-white ml-0.5" />
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Bottom Info Overlay: Description & Reel visual swipe together */}
+                            <div className="relative z-10 p-4 space-y-2 text-left bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-8">
+                              <p className="font-serif italic text-sm sm:text-base text-white leading-tight">
+                                {currentItem.title}
+                              </p>
+                              <p className="text-[10px] text-[#DAD7CD]/80 leading-relaxed font-sans line-clamp-3">
+                                {currentItem.desc}
+                              </p>
+
+                              {/* Stats */}
+                              <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[9px] font-mono text-[#DAD7CD]/60">
+                                <div className="flex items-center gap-3">
+                                  <span className="flex items-center gap-1 text-red-400 font-semibold">
+                                    <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" />
+                                    {currentItem.likes}
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <Eye className="w-3.5 h-3.5 text-[#DAD7CD]/80" />
+                                    {currentItem.views}
+                                  </span>
+                                </div>
+                                <span>@agrohub_live</span>
+                              </div>
+
+                              {/* Simple Timeline Progress Bar */}
+                              <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden mt-2 relative">
+                                <div className="h-full w-2/3 bg-[#A3B18A]" />
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })()}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Vertical Reels Navigation Feed Sidebar */}
+                  <div className="w-20 md:w-24 border-l border-[#E8E6D9]/10 bg-black/30 p-2 md:p-3 flex flex-col items-center gap-2 justify-center h-full shrink-0">
+                    <span className="font-mono text-[6px] sm:text-[7px] text-[#A3B18A] tracking-wider text-center block mb-1 uppercase font-bold">
+                      ЛЕНТА
+                    </span>
+                    <div className="flex flex-col gap-2 overflow-y-auto max-h-[85%] pr-1 scrollbar-none">
+                      {gallery.items.map((item, idx) => {
+                        const isActive = idx === activeReelIndex;
+                        return (
+                          <button
+                            key={idx}
+                            onClick={() => setActiveReelIndex(idx)}
+                            className={`relative aspect-[9/16] w-12 md:w-16 h-auto rounded-lg overflow-hidden border transition-all duration-300 hover:scale-105 cursor-pointer ${
+                              isActive 
+                                ? "border-[#A3B18A] ring-2 ring-[#A3B18A]/30 scale-105" 
+                                : "border-white/10 opacity-50 hover:opacity-100"
+                            }`}
+                          >
+                            <img 
+                              src={item.url} 
+                              className="w-full h-full object-cover" 
+                              alt="" 
+                              referrerPolicy="no-referrer"
+                            />
+                            <div className="absolute inset-0 bg-black/40" />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              {item.type === "video" ? (
+                                <Play className="w-3 h-3 text-white/80 fill-white/20" />
+                              ) : (
+                                <Sparkles className="w-3 h-3 text-[#D4DE72]/80" />
+                              )}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Close Button */}
+                <button
+                  onClick={() => setExpandedTrack(null)}
+                  className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-[#E8E6D9] hover:text-white hover:bg-black/80 transition-all z-55"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </motion.div>
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
+    </div>
+  );
+}

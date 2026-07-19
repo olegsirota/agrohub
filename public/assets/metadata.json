@@ -1,0 +1,6 @@
+{
+  "name": "АгроХаб Олега Сироты",
+  "description": "Лендинг-сайт летнего агроинженерного лагеря и хакатона по сельской робототехнике АгроХаб",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
