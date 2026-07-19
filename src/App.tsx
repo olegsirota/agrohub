@@ -9,6 +9,7 @@ import HolographicPlant from "./components/HolographicPlant";
 import AiConsultant from "./components/AiConsultant";
 import RealityShow from "./components/RealityShow";
 import FormSection from "./components/FormSection";
+import PartnersCarousel from "./components/PartnersCarousel";
 
 // Icons
 import {
@@ -327,6 +328,9 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* 3.5 Partners carousel (между первым и вторым экраном) */}
+      <PartnersCarousel />
 
       {/* 4. Why Section (Польза от участия в лагере) */}
       <section
