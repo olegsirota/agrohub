@@ -10,6 +10,7 @@ import AiConsultant from "./components/AiConsultant";
 import RealityShow from "./components/RealityShow";
 import FormSection from "./components/FormSection";
 import PartnersCarousel from "./components/PartnersCarousel";
+import ReelModal from "./components/ReelModal";
 
 // Icons
 import {
@@ -445,7 +446,7 @@ export default function App() {
       <section
         id="tracks-section"
         ref={tracksRef}
-        className="relative z-20 pt-[5px] pb-16 px-6 md:px-12 lg:px-24 border-b border-[#E8E6D9]/10 bg-gradient-to-b from-[#0F1108] to-[#0a0b05] overflow-hidden"
+        className="relative z-20 pt-[5px] pb-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0F1108] to-[#0a0b05] overflow-hidden"
       >
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="max-w-3xl mb-12">
@@ -457,11 +458,11 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="flex md:grid md:grid-cols-3 gap-5 md:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {/* Track 1: Robots */}
-            <div 
+            <div
               onClick={() => setExpandedTrack(1)}
-              className="bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#A3B18A]/40 transition-all group duration-300 shadow-xl"
+              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#A3B18A]/40 transition-all group duration-300 shadow-xl"
             >
               <div>
                 <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Роботы</h3>
@@ -470,9 +471,9 @@ export default function App() {
             </div>
 
             {/* Track 2: Robodogs */}
-            <div 
+            <div
               onClick={() => setExpandedTrack(2)}
-              className="bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#D4DE72]/40 transition-all group duration-300 shadow-xl"
+              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#D4DE72]/40 transition-all group duration-300 shadow-xl"
             >
               <div>
                 <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Робособаки</h3>
@@ -481,9 +482,9 @@ export default function App() {
             </div>
 
             {/* Track 3: AI & Neural Networks */}
-            <div 
+            <div
               onClick={() => setExpandedTrack(3)}
-              className="bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-emerald-500/40 transition-all group duration-300 shadow-xl"
+              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-emerald-500/40 transition-all group duration-300 shadow-xl"
             >
               <div>
                 <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Нейросети</h3>
@@ -607,191 +608,7 @@ export default function App() {
         {expandedTrack !== null && (() => {
           const gallery = TRACK_GALLERIES.find(g => g.id === expandedTrack);
           if (!gallery) return null;
-          const currentItem = gallery.items[activeReelIndex] || gallery.items[0];
-          return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-[#0F1108]/95 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-6"
-              onClick={() => setExpandedTrack(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.95, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.95, y: 20 }}
-                transition={{ type: "spring", damping: 25, stiffness: 350 }}
-                className="relative max-w-4xl w-full bg-[#12140D] border border-[#E8E6D9]/15 rounded-3xl overflow-hidden flex flex-col md:flex-row h-[85vh] md:h-[75vh] shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Left side: Track Info */}
-                <div className="w-full md:w-2/5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[#E8E6D9]/10 flex flex-col justify-between bg-[#1B3022]/10 shrink-0">
-                  <div className="space-y-4">
-                    <h3 className="font-serif italic text-3xl text-[#E8E6D9] leading-tight">
-                      {gallery.title}
-                    </h3>
-                    <div className="space-y-2 pt-4 border-t border-[#E8E6D9]/10">
-                      <p className="text-xs font-mono text-[#D4DE72] uppercase tracking-wider font-semibold">
-                        {currentItem.title}
-                      </p>
-                      <p className="text-xs sm:text-sm text-[#E8E6D9]/75 leading-relaxed font-sans">
-                        {currentItem.desc}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 space-y-3">
-                    <a
-                      href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-3 px-6 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-[10px] tracking-widest rounded-full hover:bg-white transition-all cursor-pointer text-center block shadow-md"
-                    >
-                      ПОДАТЬ ЗАЯВКУ
-                    </a>
-                    <button
-                      onClick={() => setExpandedTrack(null)}
-                      className="w-full py-3 px-6 bg-transparent border border-[#E8E6D9]/20 hover:border-[#E8E6D9]/40 text-[#E8E6D9] font-semibold uppercase text-[10px] tracking-widest rounded-full transition-all cursor-pointer text-center block"
-                    >
-                      Закрыть галерею
-                    </button>
-                  </div>
-                </div>
-
-                {/* Right side: Interactive Reels Player with Vertical Feed */}
-                <div className="w-full md:w-3/5 flex flex-row h-full bg-[#080905]/95 overflow-hidden relative">
-                  {/* Main Active Reel Player (takes remaining width) */}
-                  <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden h-full">
-                    <AnimatePresence mode="wait">
-                      {(() => {
-                        if (!currentItem) return null;
-                        return (
-                          <motion.div
-                            key={activeReelIndex}
-                            initial={{ opacity: 0, y: 150 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -150 }}
-                            transition={{ type: "spring", damping: 25, stiffness: 180 }}
-                            className="relative aspect-[9/16] h-[95%] max-h-[460px] w-auto mx-auto rounded-2xl overflow-hidden bg-black border border-[#E8E6D9]/15 shadow-2xl group flex flex-col justify-end"
-                          >
-                            {/* Reel Visual (Image/Video Proxy) */}
-                            <img 
-                              src={currentItem.url} 
-                              className="absolute inset-0 w-full h-full object-cover" 
-                              alt={currentItem.title}
-                              referrerPolicy="no-referrer"
-                            />
-                            
-                            {/* Vignette */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-black/50 pointer-events-none" />
-
-                            {/* Top Badges */}
-                            <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                              <span className="font-mono text-[8px] bg-black/60 text-[#DAD7CD] px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1">
-                                {currentItem.type === "video" ? <Video className="w-2.5 h-2.5 text-emerald-400" /> : <Sparkles className="w-2.5 h-2.5 text-[#D4DE72]" />}
-                                {currentItem.type === "video" ? "VIDEO REEL" : "PHOTO SPOT"}
-                              </span>
-                              
-                              {currentItem.type === "video" && (
-                                <div className="w-6 h-6 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white">
-                                  <Volume2 className="w-3 h-3 text-[#A3B18A] animate-pulse" />
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Play overlay */}
-                            {currentItem.type === "video" && (
-                              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                                <div className="w-12 h-12 rounded-full bg-white/25 backdrop-blur-md border border-white/40 flex items-center justify-center text-white transform group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                                  <Play className="w-5 h-5 fill-white ml-0.5" />
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Bottom Info Overlay: Description & Reel visual swipe together */}
-                            <div className="relative z-10 p-4 space-y-2 text-left bg-gradient-to-t from-black/95 via-black/80 to-transparent pt-8">
-                              <p className="font-serif italic text-sm sm:text-base text-white leading-tight">
-                                {currentItem.title}
-                              </p>
-                              <p className="text-[10px] text-[#DAD7CD]/80 leading-relaxed font-sans line-clamp-3">
-                                {currentItem.desc}
-                              </p>
-
-                              {/* Stats */}
-                              <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[9px] font-mono text-[#DAD7CD]/60">
-                                <div className="flex items-center gap-3">
-                                  <span className="flex items-center gap-1 text-red-400 font-semibold">
-                                    <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" />
-                                    {currentItem.likes}
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <Eye className="w-3.5 h-3.5 text-[#DAD7CD]/80" />
-                                    {currentItem.views}
-                                  </span>
-                                </div>
-                                <span>@agrohub_live</span>
-                              </div>
-
-                              {/* Simple Timeline Progress Bar */}
-                              <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden mt-2 relative">
-                                <div className="h-full w-2/3 bg-[#A3B18A]" />
-                              </div>
-                            </div>
-                          </motion.div>
-                        );
-                      })()}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Vertical Reels Navigation Feed Sidebar */}
-                  <div className="w-20 md:w-24 border-l border-[#E8E6D9]/10 bg-black/30 p-2 md:p-3 flex flex-col items-center gap-2 justify-center h-full shrink-0">
-                    <span className="font-mono text-[6px] sm:text-[7px] text-[#A3B18A] tracking-wider text-center block mb-1 uppercase font-bold">
-                      ЛЕНТА
-                    </span>
-                    <div className="flex flex-col gap-2 overflow-y-auto max-h-[85%] pr-1 scrollbar-none">
-                      {gallery.items.map((item, idx) => {
-                        const isActive = idx === activeReelIndex;
-                        return (
-                          <button
-                            key={idx}
-                            onClick={() => setActiveReelIndex(idx)}
-                            className={`relative aspect-[9/16] w-12 md:w-16 h-auto rounded-lg overflow-hidden border transition-all duration-300 hover:scale-105 cursor-pointer ${
-                              isActive 
-                                ? "border-[#A3B18A] ring-2 ring-[#A3B18A]/30 scale-105" 
-                                : "border-white/10 opacity-50 hover:opacity-100"
-                            }`}
-                          >
-                            <img 
-                              src={item.url} 
-                              className="w-full h-full object-cover" 
-                              alt="" 
-                              referrerPolicy="no-referrer"
-                            />
-                            <div className="absolute inset-0 bg-black/40" />
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              {item.type === "video" ? (
-                                <Play className="w-3 h-3 text-white/80 fill-white/20" />
-                              ) : (
-                                <Sparkles className="w-3 h-3 text-[#D4DE72]/80" />
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Close Button */}
-                <button
-                  onClick={() => setExpandedTrack(null)}
-                  className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 flex items-center justify-center text-[#E8E6D9] hover:text-white hover:bg-black/80 transition-all z-55"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </motion.div>
-            </motion.div>
-          );
+          return <ReelModal gallery={gallery} onClose={() => setExpandedTrack(null)} />;
         })()}
       </AnimatePresence>
     </div>
