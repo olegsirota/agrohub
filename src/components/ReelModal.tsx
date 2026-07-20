@@ -75,11 +75,11 @@ export default function ReelModal({
         <div className="w-full md:w-2/5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[#E8E6D9]/10 flex flex-col justify-between bg-[#1B3022]/10 shrink-0">
           <div>
             {gallery.subtitle && (
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#A3B18A]">
+              <span className="font-sans font-bold text-[10px] uppercase tracking-widest text-[#A3B18A]">
                 {gallery.subtitle}
               </span>
             )}
-            <h3 className="font-serif italic text-2xl md:text-3xl text-[#E8E6D9] leading-tight mt-2">
+            <h3 className="font-sans font-bold uppercase text-2xl md:text-3xl text-[#E8E6D9] leading-tight mt-2">
               {gallery.title}
             </h3>
             <div className="mt-5 pt-4 border-t border-[#E8E6D9]/10 min-h-[132px]">
@@ -91,13 +91,13 @@ export default function ReelModal({
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <p className="text-xs font-mono text-[#D4DE72] uppercase tracking-wider font-semibold mb-2">
+                  <p className="text-xs font-sans font-bold text-[#D4DE72] uppercase tracking-wider font-semibold mb-2">
                     {current.title}
                   </p>
                   <p className="text-sm text-[#E8E6D9]/75 leading-relaxed">
                     {current.desc}
                   </p>
-                  <div className="flex items-center gap-4 mt-4 text-[11px] font-mono text-[#DAD7CD]/60">
+                  <div className="flex items-center gap-4 mt-4 text-[11px] font-sans font-bold text-[#DAD7CD]/60">
                     <span className="flex items-center gap-1 text-red-400">
                       <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" />
                       {current.likes}
@@ -154,7 +154,7 @@ export default function ReelModal({
           ref={feedRef}
           className="relative w-full md:w-3/5 flex-1 min-h-0 bg-[#080905] overflow-y-scroll snap-y snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <div className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 z-20 font-mono text-[9px] uppercase tracking-widest text-[#E8E6D9]/50 bg-black/40 px-2.5 py-1 rounded-full border border-white/10">
+          <div className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 z-20 font-sans font-bold text-[9px] uppercase tracking-widest text-[#E8E6D9]/50 bg-black/40 px-2.5 py-1 rounded-full border border-white/10">
             Листай ленту ↕
           </div>
 
@@ -177,7 +177,7 @@ export default function ReelModal({
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/40 pointer-events-none" />
 
                 <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                  <span className="font-mono text-[8px] bg-black/60 text-[#DAD7CD] px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1">
+                  <span className="font-sans font-bold text-[8px] bg-black/60 text-[#DAD7CD] px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1">
                     {item.type === "video" ? (
                       <Video className="w-2.5 h-2.5 text-emerald-400" />
                     ) : (
@@ -201,10 +201,10 @@ export default function ReelModal({
                 )}
 
                 <div className="absolute bottom-0 inset-x-0 z-10 p-4 bg-gradient-to-t from-black/95 via-black/70 to-transparent pt-10">
-                  <p className="font-serif italic text-base text-white leading-tight">
+                  <p className="font-sans font-bold uppercase text-base text-white leading-tight">
                     {item.title}
                   </p>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-white/10 text-[9px] font-mono text-[#DAD7CD]/70">
+                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-white/10 text-[9px] font-sans font-bold text-[#DAD7CD]/70">
                     <span className="flex items-center gap-3">
                       <span className="flex items-center gap-1 text-red-400">
                         <Heart className="w-3 h-3 fill-red-500 text-red-500" />

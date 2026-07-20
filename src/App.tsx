@@ -11,7 +11,6 @@ import RealityShow from "./components/RealityShow";
 import FormSection from "./components/FormSection";
 import PartnersCarousel from "./components/PartnersCarousel";
 import ReelModal from "./components/ReelModal";
-import ScheduleSlide from "./components/ScheduleSlide";
 
 // Icons
 import {
@@ -356,90 +355,91 @@ export default function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7 }}
-            className="font-serif italic text-3xl md:text-5xl text-[#DAD7CD] mb-[5px] text-center md:text-left"
+            className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-8 md:mb-10 text-center md:text-left"
           >
             Польза от участия в лагере
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[5px] max-w-4xl mx-auto">
-            {/* Left Column */}
-            <div className="flex flex-col gap-[5px]">
-              {/* Card 1 */}
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
-              >
-                <div className="space-y-2">
-                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Реальные данные с первого дня</h3>
-                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
-                    Сам строишь пайплайны сбора данных, сам разрабатываешь, анализируешь и тестируешь прямо на Истринской сыроварне.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Card 2 */}
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
-              >
-                <div className="space-y-2">
-                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Дорогое производственное оборудование</h3>
-                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
-                    Манипуляторы, робособаки Unitree Go2, нейросети. Сразу получаешь доступ к технике и наставникам.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Right Column (Offset Downward like in the screenshot) */}
-            <div className="flex flex-col gap-[5px] md:mt-[40px]">
-              {/* Card 3 */}
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
-              >
-                <div className="space-y-2">
-                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Душевные моменты</h3>
-                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
-                    Твой код и твой рассвет в коровнике увидят тысячи зрителей, а тебе точно будет что рассказать. Костёр по вечерам гарантируем.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Card 4 */}
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
-              >
-                <div className="space-y-2">
-                  <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Связи на всю жизнь</h3>
-                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
-                    Студенты аграрных и технических вузов, инженеры, IT-специалисты и робототехники со всей страны.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
+          {/* Часть 1: две ключевые выгоды */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mb-14 md:mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 hover:bg-[#0F1108]/25 transition-all duration-300 shadow-xl"
+            >
+              <h3 className="font-sans font-bold uppercase text-lg md:text-xl text-[#DAD7CD] mb-1.5">Реальные данные с первого дня</h3>
+              <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
+                Сам строишь пайплайны сбора данных, разрабатываешь, анализируешь и тестируешь прямо на Истринской сыроварне.
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 hover:bg-[#0F1108]/25 transition-all duration-300 shadow-xl"
+            >
+              <h3 className="font-sans font-bold uppercase text-lg md:text-xl text-[#DAD7CD] mb-1.5">Дорогое производственное оборудование</h3>
+              <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">
+                Манипуляторы, робособаки Unitree Go2, нейросети. Сразу получаешь доступ к технике и наставникам.
+              </p>
+            </motion.div>
           </div>
 
-          {/* ПОДАТЬ ЗАЯВКУ Button after this block, centered between bottom card and end of slide */}
-          <motion.div 
+          {/* Часть 2: смена — даты, распорядок, лекции */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="border-t border-[#E8E6D9]/12 pt-10 md:pt-12"
+          >
+            <h3 className="font-sans font-black uppercase text-2xl md:text-4xl tracking-tight text-[#E8E6D9] mb-8 md:mb-10">
+              Смена <span className="text-[#D4DE72]">8 дней</span>
+            </h3>
+            <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+              <div>
+                <p className="font-sans font-bold text-[10px] uppercase tracking-[0.22em] text-[#A3B18A] mb-4">Потоки 2026</p>
+                <div className="space-y-3">
+                  {[["3-я смена", "16–25 июля"], ["4-я смена", "9–19 августа"], ["5-я смена", "19–29 августа"]].map(([sm, d]) => (
+                    <div key={sm} className="flex items-baseline justify-between gap-3 border-b border-[#E8E6D9]/10 pb-2">
+                      <span className="font-sans font-bold uppercase text-base md:text-lg text-[#DAD7CD]">{sm}</span>
+                      <span className="text-sm md:text-base font-semibold text-[#E8E6D9] whitespace-nowrap">{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="font-sans font-bold text-[10px] uppercase tracking-[0.22em] text-[#A3B18A] mb-4">День в лагере</p>
+                <div className="space-y-2.5">
+                  {[["08:00", "Подъём"], ["11:00", "Лекция"], ["12:00–17:00", "Проекты · гемба на ферме"], ["18:00", "Съёмка контента"], ["21:00", "Рефлексия у костра"]].map(([t, l]) => (
+                    <div key={t} className="flex gap-3 items-baseline">
+                      <span className="font-sans font-bold text-xs text-[#D4DE72] shrink-0 w-24">{t}</span>
+                      <span className="text-sm text-[#E8E6D9]/85">{l}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="font-sans font-bold text-[10px] uppercase tracking-[0.22em] text-[#A3B18A] mb-4">Чему учим · лекции</p>
+                <ul className="space-y-2.5">
+                  {["Робототехника Unitree G1", "Робособаки в поле", "Нейросети и компьютерное зрение", "Лекторий: лекции по продуктам", "Работа на ферме и нетворкинг"].map((x) => (
+                    <li key={x} className="text-sm text-[#E8E6D9]/85 flex gap-2.5"><span className="text-[#D4DE72]">•</span>{x}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ПОДАТЬ ЗАЯВКУ */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="pt-16 pb-16 flex justify-center"
+            transition={{ duration: 0.5 }}
+            className="pt-14 pb-16 flex justify-center"
           >
             <a
               href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
@@ -481,8 +481,8 @@ export default function App() {
                 <Play className="w-4 h-4 fill-white ml-0.5" />
               </div>
               <div className="absolute bottom-0 inset-x-0 p-6 z-10">
-                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Роботы</h3>
-                <p className="text-[10px] uppercase tracking-widest font-mono text-[#D4DE72] mt-1">Смотреть тиктоки →</p>
+                <h3 className="font-sans font-bold uppercase text-2xl text-[#E8E6D9]">Роботы</h3>
+                <p className="text-[10px] uppercase tracking-widest font-sans font-bold text-[#D4DE72] mt-1">Подробнее</p>
               </div>
             </div>
 
@@ -497,8 +497,8 @@ export default function App() {
                 <Play className="w-4 h-4 fill-white ml-0.5" />
               </div>
               <div className="absolute bottom-0 inset-x-0 p-6 z-10">
-                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Робособаки</h3>
-                <p className="text-[10px] uppercase tracking-widest font-mono text-[#D4DE72] mt-1">Смотреть тиктоки →</p>
+                <h3 className="font-sans font-bold uppercase text-2xl text-[#E8E6D9]">Робособаки</h3>
+                <p className="text-[10px] uppercase tracking-widest font-sans font-bold text-[#D4DE72] mt-1">Подробнее</p>
               </div>
             </div>
 
@@ -513,8 +513,8 @@ export default function App() {
                 <Play className="w-4 h-4 fill-white ml-0.5" />
               </div>
               <div className="absolute bottom-0 inset-x-0 p-6 z-10">
-                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Нейросети</h3>
-                <p className="text-[10px] uppercase tracking-widest font-mono text-[#D4DE72] mt-1">Смотреть тиктоки →</p>
+                <h3 className="font-sans font-bold uppercase text-2xl text-[#E8E6D9]">Нейросети</h3>
+                <p className="text-[10px] uppercase tracking-widest font-sans font-bold text-[#D4DE72] mt-1">Подробнее</p>
               </div>
             </div>
           </div>
@@ -533,9 +533,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5.5 Schedule Slide (после слайда с тиктоками) */}
-      <ScheduleSlide />
-
         {/* 11. FAQ Accordion Section */}
         <section
           id="faq-section"
@@ -547,7 +544,7 @@ export default function App() {
         >
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h3 className="font-serif italic text-3xl md:text-4xl text-[#DAD7CD]">
+            <h3 className="font-sans font-bold uppercase text-3xl md:text-4xl text-[#DAD7CD]">
               Частые вопросы участников
             </h3>
           </div>
@@ -564,7 +561,7 @@ export default function App() {
                     onClick={() => setActiveFaq(isOpen ? null : item.id)}
                     className="w-full p-5 text-left flex justify-between items-center hover:bg-[#344E41]/20 transition-all cursor-pointer"
                   >
-                    <span className="font-serif italic text-sm sm:text-base text-[#E8E6D9]">
+                    <span className="font-sans font-bold uppercase text-sm sm:text-base text-[#E8E6D9]">
                       {item.question}
                     </span>
                     <ChevronDown
@@ -626,7 +623,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 text-[10px] uppercase tracking-widest font-mono text-[#E8E6D9]/40">
+          <div className="flex flex-wrap justify-center gap-6 text-[10px] uppercase tracking-widest font-sans font-bold text-[#E8E6D9]/40">
             <span>Истринская сыроварня Олега и Татьяны Сироты</span>
           </div>
         </div>
