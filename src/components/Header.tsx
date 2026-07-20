@@ -50,14 +50,6 @@ export default function Header({ onScrollToForm, onScrollToSection, submissionsC
 
       {/* Live submissions and CTA */}
       <div className="flex items-center gap-4">
-        {/* Dynamic applicant ticker */}
-        <div className="hidden lg:flex items-center gap-2 bg-[#344E41]/30 border border-[#A3B18A]/20 px-3 py-1.5 rounded-full">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="font-mono text-[9px] uppercase tracking-wider text-[#DAD7CD]">
-            Смена LIVE: {submissionsCount + 20} заявок
-          </span>
-        </div>
-
         <a
           href="https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3"
           target="_blank"

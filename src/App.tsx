@@ -11,6 +11,7 @@ import RealityShow from "./components/RealityShow";
 import FormSection from "./components/FormSection";
 import PartnersCarousel from "./components/PartnersCarousel";
 import ReelModal from "./components/ReelModal";
+import ScheduleSlide from "./components/ScheduleSlide";
 
 // Icons
 import {
@@ -130,6 +131,14 @@ const TRACK_GALLERIES = [
       }
     ]
   }
+];
+
+// Обложки треков: гуманоид (роботы), робособака, программист (нейросети).
+// Клик по обложке открывает ленту тиктоков (ReelModal).
+const TRACK_COVERS = [
+  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&h=800&q=80",
+  "https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&w=800&h=800&q=80",
+  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&h=800&q=80",
 ];
 
 function VerticalReelTicker({ items }: { items: any[] }) {
@@ -286,9 +295,9 @@ export default function App() {
 
       {/* 3. Hero Section (Opener) */}
       <section
-        className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-[5px] px-6 md:px-12 lg:px-24 border-none bg-cover bg-center bg-no-repeat"
+        className="relative min-h-[90vh] flex flex-col justify-center pt-32 pb-24 px-6 md:px-12 lg:px-24 border-none bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(15, 17, 8, 0) 0%, rgba(15, 17, 8, 0.1) 40%, rgba(27, 48, 34, 0.6) 80%, #1B3022 100%), url('${import.meta.env.BASE_URL}assets/farm_bg.jpeg'), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1800&q=80')`
+          backgroundImage: `linear-gradient(to bottom, rgba(15, 17, 8, 0) 0%, rgba(15, 17, 8, 0.1) 40%, rgba(27, 48, 34, 0.6) 80%, #1B3022 100%), url('${import.meta.env.BASE_URL}assets/farm_bg.jpeg')`
         }}
       >
         <div className="relative z-20 max-w-5xl">
@@ -328,16 +337,18 @@ export default function App() {
             </button>
           </div>
         </div>
-      </section>
 
-      {/* 3.5 Partners carousel (между первым и вторым экраном) */}
-      <PartnersCarousel />
+        {/* Узкая полупрозрачная панель партнёров поверх фото hero */}
+        <div className="absolute inset-x-0 bottom-0 z-20">
+          <PartnersCarousel />
+        </div>
+      </section>
 
       {/* 4. Why Section (Польза от участия в лагере) */}
       <section
         id="why-section"
         ref={whyRef}
-        className="relative pt-[5px] pb-0 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022] to-[#0F1108] overflow-hidden w-full"
+        className="relative pt-24 md:pt-36 pb-0 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022] to-[#0F1108] overflow-hidden w-full"
       >
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <motion.h2 
@@ -359,7 +370,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
               >
                 <div className="space-y-2">
                   <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Реальные данные с первого дня</h3>
@@ -375,7 +386,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
               >
                 <div className="space-y-2">
                   <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Дорогое производственное оборудование</h3>
@@ -394,7 +405,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
               >
                 <div className="space-y-2">
                   <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Душевные моменты</h3>
@@ -410,7 +421,7 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="bg-[#0F1108]/15 backdrop-blur-3xl border border-[#E8E6D9]/10 rounded-2xl p-5 md:p-6 hover:border-[#A3B18A]/30 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
+                className="bg-[#0F1108]/15 backdrop-blur-3xl rounded-2xl p-5 md:p-6 hover:bg-[#0F1108]/25 transition-all duration-300 flex flex-col justify-start h-fit shadow-xl"
               >
                 <div className="space-y-2">
                   <h3 className="font-serif italic text-lg md:text-xl text-[#DAD7CD]">Связи на всю жизнь</h3>
@@ -462,34 +473,49 @@ export default function App() {
             {/* Track 1: Robots */}
             <div
               onClick={() => setExpandedTrack(1)}
-              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#A3B18A]/40 transition-all group duration-300 shadow-xl"
+              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full relative overflow-hidden rounded-3xl h-[360px] cursor-pointer hover:scale-[1.02] transition-all group duration-300 shadow-xl"
             >
-              <div>
-                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Роботы</h3>
+              <img src={TRACK_COVERS[0]} alt="Роботы" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/35" />
+              <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/45 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                <Play className="w-4 h-4 fill-white ml-0.5" />
               </div>
-              <VerticalReelTicker items={TRACK_GALLERIES[0].items} />
+              <div className="absolute bottom-0 inset-x-0 p-6 z-10">
+                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Роботы</h3>
+                <p className="text-[10px] uppercase tracking-widest font-mono text-[#D4DE72] mt-1">Смотреть тиктоки →</p>
+              </div>
             </div>
 
             {/* Track 2: Robodogs */}
             <div
               onClick={() => setExpandedTrack(2)}
-              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-[#D4DE72]/40 transition-all group duration-300 shadow-xl"
+              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full relative overflow-hidden rounded-3xl h-[360px] cursor-pointer hover:scale-[1.02] transition-all group duration-300 shadow-xl"
             >
-              <div>
-                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Робособаки</h3>
+              <img src={TRACK_COVERS[1]} alt="Робособаки" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/35" />
+              <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/45 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                <Play className="w-4 h-4 fill-white ml-0.5" />
               </div>
-              <VerticalReelTicker items={TRACK_GALLERIES[1].items} />
+              <div className="absolute bottom-0 inset-x-0 p-6 z-10">
+                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Робособаки</h3>
+                <p className="text-[10px] uppercase tracking-widest font-mono text-[#D4DE72] mt-1">Смотреть тиктоки →</p>
+              </div>
             </div>
 
             {/* Track 3: AI & Neural Networks */}
             <div
               onClick={() => setExpandedTrack(3)}
-              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full bg-[#344E41]/20 border border-[#E8E6D9]/10 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between h-[360px] cursor-pointer hover:scale-[1.02] hover:border-emerald-500/40 transition-all group duration-300 shadow-xl"
+              className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full relative overflow-hidden rounded-3xl h-[360px] cursor-pointer hover:scale-[1.02] transition-all group duration-300 shadow-xl"
             >
-              <div>
-                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Нейросети</h3>
+              <img src={TRACK_COVERS[2]} alt="Нейросети" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/35" />
+              <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/45 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                <Play className="w-4 h-4 fill-white ml-0.5" />
               </div>
-              <VerticalReelTicker items={TRACK_GALLERIES[2].items} />
+              <div className="absolute bottom-0 inset-x-0 p-6 z-10">
+                <h3 className="font-serif italic text-2xl text-[#E8E6D9]">Нейросети</h3>
+                <p className="text-[10px] uppercase tracking-widest font-mono text-[#D4DE72] mt-1">Смотреть тиктоки →</p>
+              </div>
             </div>
           </div>
 
@@ -506,6 +532,9 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* 5.5 Schedule Slide (после слайда с тиктоками) */}
+      <ScheduleSlide />
 
         {/* 11. FAQ Accordion Section */}
         <section
@@ -591,14 +620,14 @@ export default function App() {
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
             />
             <div>
-              <span className="font-serif italic text-sm text-[#E8E6D9] block leading-none">
+              <span className="font-sans font-bold uppercase text-xs md:text-sm tracking-widest text-[#E8E6D9] block leading-none">
                 Агрохаб 2026
               </span>
             </div>
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 text-[10px] uppercase tracking-widest font-mono text-[#E8E6D9]/40">
-            <span>© 2026 AgroHub Lab. Все права защищены.</span>
+            <span>Истринская сыроварня Олега и Татьяны Сироты</span>
           </div>
         </div>
       </footer>
