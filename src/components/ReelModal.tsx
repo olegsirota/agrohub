@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Play, Heart, Eye, Volume2, Video, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 
 interface ReelItem {
-  type: string;
   url: string;
   title: string;
   desc: string;
-  likes: string;
-  views: string;
 }
 interface Gallery {
   id: number;
@@ -27,8 +24,11 @@ export default function ReelModal({
   const [active, setActive] = useState(0);
   const feedRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Активный рил определяется тем, какой слайд сейчас в центре ленты (ручной скролл).
+  const base = import.meta.env.BASE_URL;
+
+  // Активное видео = то, что сейчас в центре ленты (ручной скролл).
   useEffect(() => {
     const root = feedRef.current;
     if (!root) return;
@@ -45,6 +45,27 @@ export default function ReelModal({
     );
     slideRefs.current.forEach((el) => el && io.observe(el));
     return () => io.disconnect();
+  }, [gallery.id]);
+
+  // Играет только активное видео, остальные на паузе.
+  useEffect(() => {
+    videoRefs.current.forEach((v, i) => {
+      if (!v) return;
+      if (i === active) {
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }, [active, gallery.id]);
+
+  // При открытии ленты — сброс на первое видео (без дрейфа от загрузки видео).
+  useEffect(() => {
+    setActive(0);
+    const id = requestAnimationFrame(() => {
+      if (feedRef.current) feedRef.current.scrollTop = 0;
+    });
+    return () => cancelAnimationFrame(id);
   }, [gallery.id]);
 
   useEffect(() => {
@@ -71,7 +92,7 @@ export default function ReelModal({
         className="relative max-w-4xl w-full bg-[#12140D] border border-[#E8E6D9]/15 rounded-3xl overflow-hidden flex flex-col md:flex-row h-[88vh] md:h-[78vh] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ЛЕВО: описание кейса + кнопки (меняется при скролле ленты) */}
+        {/* ЛЕВО: краткое описание + кнопки (меняется при скролле ленты) */}
         <div className="w-full md:w-2/5 p-6 md:p-8 border-b md:border-b-0 md:border-r border-[#E8E6D9]/10 flex flex-col justify-between bg-[#1B3022]/10 shrink-0">
           <div>
             {gallery.subtitle && (
@@ -82,7 +103,7 @@ export default function ReelModal({
             <h3 className="font-sans font-bold uppercase text-2xl md:text-3xl text-[#E8E6D9] leading-tight mt-2">
               {gallery.title}
             </h3>
-            <div className="mt-5 pt-4 border-t border-[#E8E6D9]/10 min-h-[132px]">
+            <div className="mt-5 pt-4 border-t border-[#E8E6D9]/10 min-h-[110px]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active}
@@ -91,22 +112,12 @@ export default function ReelModal({
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <p className="text-xs font-sans font-bold text-[#D4DE72] uppercase tracking-wider font-semibold mb-2">
+                  <p className="text-xs font-sans font-bold text-[#D4DE72] uppercase tracking-wider mb-2">
                     {current.title}
                   </p>
                   <p className="text-sm text-[#E8E6D9]/75 leading-relaxed">
                     {current.desc}
                   </p>
-                  <div className="flex items-center gap-4 mt-4 text-[11px] font-sans font-bold text-[#DAD7CD]/60">
-                    <span className="flex items-center gap-1 text-red-400">
-                      <Heart className="w-3.5 h-3.5 fill-red-500 text-red-500" />
-                      {current.likes}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Eye className="w-3.5 h-3.5" />
-                      {current.views}
-                    </span>
-                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -126,7 +137,7 @@ export default function ReelModal({
                 className={`h-1.5 rounded-full transition-all ${
                   i === active ? "w-6 bg-[#A3B18A]" : "w-1.5 bg-[#E8E6D9]/25"
                 }`}
-                aria-label={`Рил ${i + 1}`}
+                aria-label={`Видео ${i + 1}`}
               />
             ))}
           </div>
@@ -144,17 +155,17 @@ export default function ReelModal({
               onClick={onClose}
               className="w-full py-3 px-6 bg-transparent border border-[#E8E6D9]/20 hover:border-[#E8E6D9]/40 text-[#E8E6D9] font-semibold uppercase text-[10px] tracking-widest rounded-full transition-all text-center block"
             >
-              Закрыть галерею
+              Закрыть
             </button>
           </div>
         </div>
 
-        {/* ПРАВО: вертикальная лента рилсов 9:16, ручной скролл со snap */}
+        {/* ПРАВО: вертикальная лента видео 9:16, ручной скролл со snap */}
         <div
           ref={feedRef}
-          className="relative w-full md:w-3/5 flex-1 min-h-0 bg-[#080905] overflow-y-scroll snap-y snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="relative w-full md:w-3/5 flex-1 min-h-0 bg-[#080905] overflow-y-scroll snap-y snap-mandatory [overflow-anchor:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <div className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 z-20 font-sans font-bold text-[9px] uppercase tracking-widest text-[#E8E6D9]/50 bg-black/40 px-2.5 py-1 rounded-full border border-white/10">
+          <div className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 z-20 font-sans font-bold text-[9px] uppercase tracking-widest text-[#E8E6D9]/45 bg-black/40 px-2.5 py-1 rounded-full border border-white/10">
             Листай ленту ↕
           </div>
 
@@ -167,57 +178,18 @@ export default function ReelModal({
               }}
               className="snap-center h-full w-full flex items-center justify-center p-4 shrink-0"
             >
-              <div className="relative aspect-[9/16] h-full max-h-[540px] w-auto rounded-2xl overflow-hidden bg-black border border-[#E8E6D9]/15 shadow-2xl group">
-                <img
-                  src={item.url}
-                  alt={item.title}
-                  referrerPolicy="no-referrer"
+              <div className="relative aspect-[9/16] h-full max-h-[540px] w-auto rounded-2xl overflow-hidden bg-black border border-[#E8E6D9]/15 shadow-2xl">
+                <video
+                  ref={(el) => {
+                    videoRefs.current[idx] = el;
+                  }}
+                  src={`${base}${item.url}`}
                   className="absolute inset-0 w-full h-full object-cover"
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/40 pointer-events-none" />
-
-                <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-10">
-                  <span className="font-sans font-bold text-[8px] bg-black/60 text-[#DAD7CD] px-2.5 py-1 rounded-full border border-white/10 flex items-center gap-1">
-                    {item.type === "video" ? (
-                      <Video className="w-2.5 h-2.5 text-emerald-400" />
-                    ) : (
-                      <Sparkles className="w-2.5 h-2.5 text-[#D4DE72]" />
-                    )}
-                    {item.type === "video" ? "VIDEO REEL" : "PHOTO SPOT"}
-                  </span>
-                  {item.type === "video" && (
-                    <div className="w-6 h-6 rounded-full bg-black/60 border border-white/10 flex items-center justify-center">
-                      <Volume2 className="w-3 h-3 text-[#A3B18A]" />
-                    </div>
-                  )}
-                </div>
-
-                {item.type === "video" && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                    <div className="w-14 h-14 rounded-full bg-white/25 backdrop-blur-md border border-white/40 flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-lg">
-                      <Play className="w-6 h-6 fill-white ml-0.5" />
-                    </div>
-                  </div>
-                )}
-
-                <div className="absolute bottom-0 inset-x-0 z-10 p-4 bg-gradient-to-t from-black/95 via-black/70 to-transparent pt-10">
-                  <p className="font-sans font-bold uppercase text-base text-white leading-tight">
-                    {item.title}
-                  </p>
-                  <div className="flex items-center justify-between pt-2 mt-2 border-t border-white/10 text-[9px] font-sans font-bold text-[#DAD7CD]/70">
-                    <span className="flex items-center gap-3">
-                      <span className="flex items-center gap-1 text-red-400">
-                        <Heart className="w-3 h-3 fill-red-500 text-red-500" />
-                        {item.likes}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Eye className="w-3 h-3" />
-                        {item.views}
-                      </span>
-                    </span>
-                    <span>@agrohub_live</span>
-                  </div>
-                </div>
               </div>
             </div>
           ))}

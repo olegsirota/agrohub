@@ -14,104 +14,76 @@ const TRACK_GALLERIES = [
   {
     id: 1,
     title: "Программируй роботов",
-    subtitle: "Роботы и Манипуляторы в действии",
+    subtitle: "Гуманоид на ферме",
     items: [
       {
-        type: "video",
-        url: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Тестирование захвата манипулятора",
-        desc: "Программирование деликатного захвата для сортировки хрупкой продукции на сыроварне.",
-        likes: "1.2k",
-        views: "14.5k"
+        url: "assets/videos/robo1.mp4",
+        title: "Первый запуск гуманоида",
+        desc: "Проверяем моторику и сенсоры человекоподобного робота перед выходом в поле.",
       },
       {
-        type: "photo",
-        url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Калибровка датчиков давления",
-        desc: "Точность до миллиметра при взаимодействии робота с сырными головками.",
-        likes: "945",
-        views: "8.2k"
+        url: "assets/videos/robo2.mp4",
+        title: "Гуманоид на грунтовке",
+        desc: "Ведём робота по полевой дороге — тест устойчивости и шага на реальной местности.",
       },
       {
-        type: "video",
-        url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Автоматический обход конвейера",
-        desc: "Интеграция роборуки с лентой подачи готовой продукции.",
-        likes: "2.1k",
-        views: "22.0k"
-      }
-    ]
+        url: "assets/videos/robo3.mp4",
+        title: "Демо на площадке",
+        desc: "Показ походки и удержания равновесия гуманоида перед командой хакатона.",
+      },
+    ],
   },
   {
     id: 2,
     title: "«Дрессируй» Unitree Go2",
-    subtitle: "Испытания четвероногих на ферме",
+    subtitle: "Робособаки в поле",
     items: [
       {
-        type: "video",
-        url: "https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Обход территории коровника",
-        desc: "Unitree Go2 патрулирует Истринскую ферму, собирая данные о температуре и влажности.",
-        likes: "3.4k",
-        views: "45.1k"
+        url: "assets/videos/dog1.mp4",
+        title: "Обход периметра фермы",
+        desc: "Робособака идёт вдоль ограды загона, собирая данные о территории.",
       },
       {
-        type: "photo",
-        url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Преодоление препятствий на поле",
-        desc: "Программирование алгоритмов стабилизации на сложной каменистой почве.",
-        likes: "1.8k",
-        views: "19.3k"
+        url: "assets/videos/dog2.mp4",
+        title: "Отладка походки в ангаре",
+        desc: "Настройка алгоритмов движения и стабилизации на гладком полу.",
       },
       {
-        type: "video",
-        url: "https://images.unsplash.com/photo-1531746790731-6c087fecd05a?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Синхронный танец робособак",
-        desc: "Душевные вечерние тесты робособак у костра — любимое шоу участников.",
-        likes: "4.7k",
-        views: "58.9k"
-      }
-    ]
+        url: "assets/videos/dog3.mp4",
+        title: "Маршрут у коровника",
+        desc: "Go2 проходит заданный маршрут по гравию в сумерках.",
+      },
+    ],
   },
   {
     id: 3,
     title: "Обучай нейросети",
-    subtitle: "АгроИИ и компьютерное зрение",
+    subtitle: "АгроИИ и хакатон",
     items: [
       {
-        type: "video",
-        url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Распознавание зерна в реальном времени",
-        desc: "Обученная модель за миллисекунды классифицирует сорт и влажность пшеницы по фото.",
-        likes: "2.8k",
-        views: "33.2k"
+        url: "assets/videos/neiro1.mp4",
+        title: "Чек-ин хакатона",
+        desc: "Смотрим, как команды справляются с задачами — времени всё меньше.",
       },
       {
-        type: "photo",
-        url: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Анализ зрелости колосьев",
-        desc: "Сбор датасета пшеницы на полях Подмосковья для предобучения ИИ-моделей.",
-        likes: "1.1k",
-        views: "11.6k"
+        url: "assets/videos/neiro2.mp4",
+        title: "Защита бизнес-задач",
+        desc: "Команды представляют решения, включая проект «Счастливый телёнок».",
       },
       {
-        type: "video",
-        url: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?auto=format&fit=crop&w=600&h=1000&q=80",
-        title: "Тепловая карта здоровья посевов",
-        desc: "Обработка снимков со спутника для составления точных карт полива.",
-        likes: "3.2k",
-        views: "38.5k"
-      }
-    ]
-  }
+        url: "assets/videos/neiro3.mp4",
+        title: "Ночная отладка",
+        desc: "Дорабатываем железо и модели под таймер до сдачи.",
+      },
+    ],
+  },
 ];
 
-// Обложки треков: гуманоид (роботы), робособака, программист (нейросети).
-// Клик по обложке открывает ленту тиктоков (ReelModal).
+// Обложки карточек направлений (клик открывает ленту видео).
 const TRACK_COVERS = [
-  "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1589254065878-42c9da997008?auto=format&fit=crop&w=800&h=800&q=80",
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&h=800&q=80",
+  "assets/robophoto.jpg",
+  "assets/robodogphoto.jpg",
+  "assets/neirophoto.jpg",
 ];
 
 export default function App() {
@@ -325,7 +297,7 @@ export default function App() {
               onClick={() => setExpandedTrack(1)}
               className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full relative overflow-hidden rounded-3xl h-[360px] cursor-pointer hover:scale-[1.02] transition-all group duration-300 shadow-xl"
             >
-              <img src={TRACK_COVERS[0]} alt="Роботы" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src={`${import.meta.env.BASE_URL}${TRACK_COVERS[0]}`} alt="Роботы" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/35" />
               <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/45 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
                 <Play className="w-4 h-4 fill-white ml-0.5" />
@@ -341,7 +313,7 @@ export default function App() {
               onClick={() => setExpandedTrack(2)}
               className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full relative overflow-hidden rounded-3xl h-[360px] cursor-pointer hover:scale-[1.02] transition-all group duration-300 shadow-xl"
             >
-              <img src={TRACK_COVERS[1]} alt="Робособаки" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src={`${import.meta.env.BASE_URL}${TRACK_COVERS[1]}`} alt="Робособаки" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/35" />
               <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/45 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
                 <Play className="w-4 h-4 fill-white ml-0.5" />
@@ -357,7 +329,7 @@ export default function App() {
               onClick={() => setExpandedTrack(3)}
               className="snap-center shrink-0 w-[80%] sm:w-[55%] md:w-full relative overflow-hidden rounded-3xl h-[360px] cursor-pointer hover:scale-[1.02] transition-all group duration-300 shadow-xl"
             >
-              <img src={TRACK_COVERS[2]} alt="Нейросети" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <img src={`${import.meta.env.BASE_URL}${TRACK_COVERS[2]}`} alt="Нейросети" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/35" />
               <div className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-black/45 backdrop-blur-sm border border-white/25 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
                 <Play className="w-4 h-4 fill-white ml-0.5" />
