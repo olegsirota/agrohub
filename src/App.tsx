@@ -1,40 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Submission, Review, FAQItem } from "./types";
-import { FAQ_DATA, REVIEWS_DATA, PARTNERS_DATA } from "./data";
+import { FAQItem } from "./types";
+import { FAQ_DATA } from "./data";
 
 // Sub-components
 import Header from "./components/Header";
-import HolographicPlant from "./components/HolographicPlant";
-import AiConsultant from "./components/AiConsultant";
-import RealityShow from "./components/RealityShow";
-import FormSection from "./components/FormSection";
 import PartnersCarousel from "./components/PartnersCarousel";
 import ReelModal from "./components/ReelModal";
 
-// Icons
-import {
-  ChevronDown,
-  Cpu,
-  Dog,
-  Brain,
-  Sparkles,
-  Award,
-  Zap,
-  CheckCircle,
-  HelpCircle,
-  TrendingUp,
-  Flame,
-  Milestone,
-  X,
-  Database,
-  Users,
-  Video,
-  Play,
-  Volume2,
-  Heart,
-  Eye
-} from "lucide-react";
+import { ChevronDown, Play } from "lucide-react";
 
 const TRACK_GALLERIES = [
   {
@@ -140,136 +114,14 @@ const TRACK_COVERS = [
   "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&h=800&q=80",
 ];
 
-function VerticalReelTicker({ items }: { items: any[] }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % items.length);
-    }, 3000); // Switch every 3 seconds
-    return () => clearInterval(timer);
-  }, [items.length]);
-
-  const currentItem = items[activeIndex];
-
-  return (
-    <div className="relative aspect-[9/16] h-[220px] w-auto overflow-hidden rounded-2xl bg-black/40 border border-[#E8E6D9]/10 mt-3 flex items-center justify-center mx-auto">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeIndex}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          className="absolute inset-0 w-full h-full flex flex-col justify-between p-4"
-        >
-          {/* Background Image Preview */}
-          <div className="absolute inset-0">
-            <img
-              src={currentItem.url}
-              alt=""
-              className="w-full h-full object-cover opacity-50"
-              referrerPolicy="no-referrer"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60" />
-          </div>
-
-          {/* Top Tag & Info */}
-          <div className="relative z-10 flex justify-between items-center w-full">
-            <span className="font-mono text-[7px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold">
-              {currentItem.type === "video" ? "VIDEO REEL" : "PHOTO SPOT"}
-            </span>
-            <div className="flex items-center gap-1 text-[9px] text-white/80 font-mono">
-              <span className="flex items-center gap-0.5">
-                <Heart className="w-2.5 h-2.5 text-red-500 fill-red-500" />
-                {currentItem.likes}
-              </span>
-            </div>
-          </div>
-
-          {/* Play Icon Indicator Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-            <div className="w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white shadow-lg">
-              {currentItem.type === "video" ? (
-                <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
-              ) : (
-                <Sparkles className="w-3.5 h-3.5 text-[#D4DE72]" />
-              )}
-            </div>
-          </div>
-
-          {/* Bottom Title & Description */}
-          <div className="relative z-10 text-left">
-            <h4 className="font-serif italic text-xs text-white leading-tight mb-0.5 truncate">
-              {currentItem.title}
-            </h4>
-            <p className="text-[9px] text-[#DAD7CD]/80 font-sans line-clamp-1 leading-normal">
-              {currentItem.desc}
-            </p>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function App() {
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [activeFaq, setActiveFaq] = useState<string | null>("faq-1");
   const [expandedTrack, setExpandedTrack] = useState<number | null>(null);
-  const [activeReelIndex, setActiveReelIndex] = useState(0);
 
-  // Reset active reel when modal track changes
-  useEffect(() => {
-    setActiveReelIndex(0);
-  }, [expandedTrack]);
-
-  // Section Refs for smooth scrolling
+  // Ссылки на секции для плавной прокрутки из меню
   const whyRef = useRef<HTMLDivElement>(null);
   const tracksRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
-
-  // Load initial submissions from Express API on mount
-  useEffect(() => {
-    fetch("/api/submissions")
-      .then((res) => {
-        if (!res.ok) throw new Error();
-        return res.json();
-      })
-      .then((data) => setSubmissions(data))
-      .catch((err) => {
-        console.error("Could not fetch submissions, using default fallback seed data.", err);
-        // Fallback seed data if backend is still starting up
-        setSubmissions([
-          {
-            id: "seed-1",
-            name: "Игорь К.",
-            role: "Разработчик ИИ",
-            track: "ИИ и Нейросети",
-            timestamp: "2 мин. назад"
-          },
-          {
-            id: "seed-2",
-            name: "Дарья П.",
-            role: "Инженер-робототехник",
-            track: "Роботы и Манипуляторы",
-            timestamp: "15 мин. назад"
-          }
-        ]);
-      });
-  }, []);
-
-  const handleAddSubmission = (newSub: Submission) => {
-    setSubmissions((prev) => [newSub, ...prev]);
-  };
-
-  const handleScrollToForm = () => {
-    const link = document.createElement("a");
-    link.href = "https://forms.yandex.ru/u/6a4b9a481f1eb5002fd7c9f3";
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.click();
-  };
 
   const handleScrollToSection = (sectionId: string) => {
     let targetRef: React.RefObject<HTMLDivElement | null> | null = null;
@@ -287,9 +139,7 @@ export default function App() {
       
       {/* 2. Navigation Header */}
       <Header
-        onScrollToForm={handleScrollToForm}
         onScrollToSection={handleScrollToSection}
-        submissionsCount={submissions.length}
       />
 
       {/* 3. Hero Section (Opener) */}

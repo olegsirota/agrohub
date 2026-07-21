@@ -1,13 +1,10 @@
 import React from "react";
-import { Award, Zap, MessageCircle } from "lucide-react";
 
 interface HeaderProps {
-  onScrollToForm: () => void;
   onScrollToSection: (sectionId: string) => void;
-  submissionsCount: number;
 }
 
-export default function Header({ onScrollToForm, onScrollToSection, submissionsCount }: HeaderProps) {
+export default function Header({ onScrollToSection }: HeaderProps) {
   return (
     <header className="absolute top-0 left-0 z-50 w-full bg-transparent border-b border-[#E8E6D9]/10 py-3.5 px-6 md:px-12 flex justify-between items-center transition-all duration-300">
       {/* Brand logo */}
