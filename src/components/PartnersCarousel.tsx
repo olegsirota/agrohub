@@ -4,7 +4,7 @@ const PARTNERS = [
   { name: "АО «Росагролизинг»", role: "Со-организатор", file: "assets/rosagro.png" },
   { name: "Минсельхоз РФ", role: "Поддержка", file: "assets/minselkhoz.png" },
   { name: "Ассоциация «Народный фермер»", role: "Партнёр", file: "assets/fermer.png" },
-  { name: "Истринская сыроварня Олега Сироты", role: "Площадка", file: "assets/sirota.png" },
+  { name: "Истринская сыроварня Олега Сироты", role: "Площадка", file: "assets/cheese_logo.png" },
 ];
 
 // Узкая полупрозрачная панель партнёров. Без заголовка, без фона —

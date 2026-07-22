@@ -225,7 +225,7 @@ export default function App() {
               <div>
                 <p className="font-sans font-bold text-[10px] uppercase tracking-[0.22em] text-[#A3B18A] mb-4">Потоки 2026</p>
                 <div className="space-y-3">
-                  {[["3-я смена", "16–25 июля"], ["4-я смена", "9–19 августа"], ["5-я смена", "19–29 августа"]].map(([sm, d]) => (
+                  {[["4-я смена", "9–19 августа"], ["5-я смена", "19–29 августа"]].map(([sm, d]) => (
                     <div key={sm} className="flex items-baseline justify-between gap-3 border-b border-[#E8E6D9]/10 pb-2">
                       <span className="font-sans font-bold uppercase text-base md:text-lg text-[#DAD7CD]">{sm}</span>
                       <span className="text-sm md:text-base font-semibold text-[#E8E6D9] whitespace-nowrap">{d}</span>
@@ -432,7 +432,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
             <img
-              src={`${import.meta.env.BASE_URL}assets/logo.png`}
+              src={`${import.meta.env.BASE_URL}assets/cheese_logo.png`}
               className="w-9 h-9 object-contain"
               alt="Logo"
               referrerPolicy="no-referrer"

@@ -10,7 +10,7 @@ export default function Header({ onScrollToSection }: HeaderProps) {
       {/* Brand logo */}
       <div className="flex items-center gap-3">
         <img
-          src={`${import.meta.env.BASE_URL}assets/logo.png`}
+          src={`${import.meta.env.BASE_URL}assets/cheese_logo.png`}
           className="w-10 h-10 object-contain"
           alt="Logo"
           referrerPolicy="no-referrer"
