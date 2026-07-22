@@ -165,10 +165,6 @@ export default function ReelModal({
           ref={feedRef}
           className="relative w-full md:w-3/5 flex-1 min-h-0 bg-[#080905] overflow-y-scroll snap-y snap-mandatory [overflow-anchor:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
-          <div className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 z-20 font-sans font-bold text-[9px] uppercase tracking-widest text-[#E8E6D9]/45 bg-black/40 px-2.5 py-1 rounded-full border border-white/10">
-            Листай ленту ↕
-          </div>
-
           {gallery.items.map((item, idx) => (
             <div
               key={idx}
