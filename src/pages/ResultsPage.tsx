@@ -102,6 +102,12 @@ export default function ResultsPage() {
             </div>
           </section>
 
+          <div className="flex justify-center">
+            <a href={`${base}assets/projects.xlsx`} download className="py-4 px-10 border border-[#E8E6D9]/30 hover:border-[#E8E6D9]/60 text-[#E8E6D9] font-semibold uppercase text-xs tracking-widest rounded-full transition-all text-center">
+              Посмотреть остальные проекты
+            </a>
+          </div>
+
           {/* Видео со смен */}
           <section>
             <h2 className="font-sans font-bold uppercase text-2xl md:text-4xl text-[#DAD7CD] mb-8">Видео со смен</h2>
