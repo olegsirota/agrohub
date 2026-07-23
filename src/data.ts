@@ -138,8 +138,10 @@ export const SHIFTS: {
     story:
       "Идёт прямо сейчас: изучаем все возможности рук андроида и внедряем его в реальную жизнь фермы — отправили опрыскивать поля, адаптируем к поливу и ищем, где ещё робот заменит человека.",
     media: [
+      { type: "video", src: "assets/videos/kuzmich_spray.mp4", label: "Кузьмич опрыскивает яблони" },
       { type: "video", src: "assets/videos/robo2.mp4", label: "Стабилизация и бег" },
       { type: "video", src: "assets/videos/dog1.mp4", label: "Обход периметра фермы" },
+      { type: "video", src: "assets/videos/kuzmich_cows.mp4", label: "Кузьмич знакомится с коровами" },
     ],
   },
   {
@@ -158,7 +160,10 @@ export const SHIFTS: {
     title: "Еда от поля до прилавка — без людей",
     story:
       "Собираем полный автономный цикл: томатный робот собирает урожай, андроид ставит ящик на автономную тележку, тележка едет в магазин, а второй андроид выставляет томаты на прилавок. Сначала MVP на хакатоне — потом внедрение в реальную жизнь на хозяйстве.",
-    media: [{ type: "image", src: "assets/shift5_ref.jpg", label: "Референс: так это будет выглядеть" }],
+    media: [
+      { type: "image", src: "assets/shift5_ref_custom.jpg", label: "Референс: вариант 1" },
+      { type: "image", src: "assets/shift5_ref_classic.jpg", label: "Референс: вариант 2" },
+    ],
   },
 ];
 
