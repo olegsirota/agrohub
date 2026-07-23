@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import PartnersCarousel from "../components/PartnersCarousel";
-import { BENEFITS, TASKS, SHIFTS, CONDITIONS, MISSION_TEXT, MISSION_TECH, FUTURE } from "../data";
+import { BENEFITS, SHIFTS, CONDITIONS, MISSION_TEXT, MISSION_TECH, FUTURE, WHO_WE_NEED } from "../data";
+import type { ShiftMedia } from "../data";
 
 const reveal = {
   initial: { opacity: 0, y: 28 },
@@ -23,6 +24,64 @@ const STATUS_LABEL: Record<string, string> = {
   open: "Набор открыт",
 };
 
+/** Атмосферное видео: играет без звука, когда карточка в зоне видимости */
+function AmbientVideo({ src }: { src: string }) {
+  const ref = React.useRef<HTMLVideoElement>(null);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className="w-full h-full object-cover"
+    />
+  );
+}
+
+function ShiftMediaStrip({ media, base }: { media: ShiftMedia[]; base: string }) {
+  return (
+    <div className={`mt-5 grid gap-3 grid-cols-1 ${media.length > 1 ? "sm:grid-cols-2" : ""}`}>
+      {media.map((m) => (
+        <div
+          key={m.src}
+          className="relative aspect-video overflow-hidden rounded-xl border border-[#E8E6D9]/12 bg-[#0F1108]/40"
+        >
+          {m.type === "video" ? (
+            <AmbientVideo src={`${base}${m.src}`} />
+          ) : (
+            <img
+              src={`${base}${m.src}`}
+              alt={m.label ?? ""}
+              loading="lazy"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {m.label && (
+            <span className="absolute bottom-2 left-2 py-1 px-2.5 rounded-full bg-[#0F1108]/70 backdrop-blur-sm text-[10px] uppercase tracking-widest font-bold text-[#E8E6D9]/90">
+              {m.label}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function HomePage() {
   const base = import.meta.env.BASE_URL;
   const scrollToSchedule = () =>
@@ -34,7 +93,7 @@ export default function HomePage() {
       <section
         className="relative min-h-[92vh] flex flex-col justify-center pt-32 pb-24 px-6 md:px-12 lg:px-24 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(15,17,8,0) 0%, rgba(15,17,8,0.1) 40%, rgba(27,48,34,0.6) 80%, #1B3022 100%), url('${base}assets/farm_bg.jpeg')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(15,17,8,0) 0%, rgba(15,17,8,0.1) 40%, rgba(27,48,34,0.6) 80%, #1B3022 100%), url('${base}assets/hero_android.jpg')`,
         }}
       >
         <div className="relative z-20 max-w-5xl">
@@ -161,6 +220,7 @@ export default function HomePage() {
                     <p className={`text-sm leading-relaxed ${isOpen || isNow ? "text-[#E8E6D9]/85" : "text-[#E8E6D9]/60"}`}>
                       {s.story}
                     </p>
+                    {s.media && <ShiftMediaStrip media={s.media} base={base} />}
                     {isOpen && (
                       <div className="mt-5 flex flex-wrap gap-3">
                         <Link to="/apply" className="py-3 px-6 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-[11px] tracking-widest rounded-full hover:bg-white transition-all">
@@ -202,31 +262,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Задачи лагеря ── */}
+      {/* ── Кто нам нужен ── */}
       <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0a0b05]/45">
         <div className="max-w-7xl mx-auto">
-          <div className="max-w-3xl mb-10 md:mb-14">
+          <div className="max-w-3xl mb-8 md:mb-10">
             <motion.h2 {...reveal} transition={{ duration: 0.6 }} className={sectionH2}>
-              Задачи лагеря
+              Кто нам нужен
             </motion.h2>
             <p className="mt-4 text-xs md:text-sm text-[#E8E6D9]/80 leading-relaxed font-medium">
-              Реальные проекты от предприятий, команды доводят их от идеи до рабочего прототипа.
+              Ждём студентов, аспирантов и готовые команды со всей страны — не только из аграрных
+              вузов.
             </p>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <span className="py-2 px-4 rounded-full bg-[#D4DE72] text-[#0F1108] text-xs sm:text-sm font-bold uppercase tracking-wide">
+                Участие бесплатное
+              </span>
+              <span className="py-2 px-4 rounded-full border border-[#A3B18A]/45 bg-[#344E41]/25 text-xs sm:text-sm font-semibold text-[#E8E6D9]/90">
+                Проживание в палаточном лагере на ферме
+              </span>
+              <span className="py-2 px-4 rounded-full border border-[#A3B18A]/45 bg-[#344E41]/25 text-xs sm:text-sm font-semibold text-[#E8E6D9]/90">
+                Питание и снаряжение — от организатора
+              </span>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {TASKS.map((t, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {WHO_WE_NEED.map((w, i) => (
               <motion.div
-                key={t.title}
+                key={w.title}
                 {...reveal}
-                transition={{ duration: 0.5, delay: (i % 2) * 0.08 }}
-                className="bg-[#344E41]/15 border border-[#E8E6D9]/10 rounded-2xl p-6 md:p-7 flex flex-col hover:border-[#A3B18A]/35 transition-colors"
+                transition={{ duration: 0.5, delay: (i % 3) * 0.08 }}
+                className="bg-[#344E41]/15 border border-[#E8E6D9]/10 rounded-2xl p-6 hover:border-[#A3B18A]/35 transition-colors"
               >
-                <span className="font-sans font-bold text-[11px] uppercase tracking-widest text-[#A3B18A] mb-3">
-                  Проект {i + 1}
-                </span>
-                <h3 className="font-sans font-bold uppercase text-lg md:text-xl text-[#E8E6D9] mb-3 leading-tight">{t.title}</h3>
-                <p className="text-sm text-[#E8E6D9]/70 leading-relaxed">{t.desc}</p>
+                <h3 className="font-sans font-bold uppercase text-base md:text-lg text-[#E8E6D9] mb-2 leading-tight">{w.title}</h3>
+                <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">{w.desc}</p>
               </motion.div>
             ))}
           </div>
