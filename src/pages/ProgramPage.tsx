@@ -9,6 +9,7 @@ import {
   PROGRAM_DAYS,
   DAY_SCHEDULE,
   HACKATHON_CRITERIA,
+  PRINCIPLES,
   PROGRAM_DOCX,
 } from "../data";
 
@@ -24,7 +25,7 @@ export default function ProgramPage() {
       <PageHero
         eyebrow="4 смена · 9 по 19 августа 2026"
         title="Программа смены"
-        subtitle="9 дней технологий и реальных инженерных вызовов на Истринской сыроварне: за смену команды разрабатывают и защищают прототипы роботизированных решений для теплиц, ферм и полей."
+        subtitle="9 дней технологий и реальных инженерных вызовов на Истринской сыроварне. Миссия четвёртой смены — манипуляторы для бережного сбора томатов для роботов из Ставрополя и автономные тележки с ИИ-управлением, чтобы продукция ездила по сыроварне без участия человека."
       />
 
       <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/45">
@@ -40,6 +41,19 @@ export default function ProgramPage() {
               <Download className="w-4 h-4" /> Скачать программу (.docx)
             </a>
           </div>
+
+          {/* Принципы смены */}
+          <section>
+            <h2 className={h2}>Принципы смены</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {PRINCIPLES.map((p) => (
+                <div key={p.title} className={`${card} p-5`}>
+                  <h3 className="font-sans font-bold uppercase text-sm text-[#E8E6D9] mb-2 leading-tight">{p.title}</h3>
+                  <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">{p.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
           {/* Образовательные направления */}
           <section>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import PartnersCarousel from "../components/PartnersCarousel";
-import { BENEFITS, PRINCIPLES, TASKS, SHIFTS, CONDITIONS } from "../data";
+import { BENEFITS, TASKS, SHIFTS, CONDITIONS, MISSION_TEXT, MISSION_TECH, FUTURE } from "../data";
 
 const reveal = {
   initial: { opacity: 0, y: 28 },
@@ -17,8 +17,16 @@ const ghostBtn =
 const sectionH2 =
   "font-sans font-black uppercase text-3xl sm:text-5xl md:text-[60px] tracking-tighter leading-[0.85] text-[#E8E6D9]";
 
+const STATUS_LABEL: Record<string, string> = {
+  done: "Проведена",
+  now: "Идёт сейчас",
+  open: "Набор открыт",
+};
+
 export default function HomePage() {
   const base = import.meta.env.BASE_URL;
+  const scrollToSchedule = () =>
+    document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <>
@@ -30,24 +38,31 @@ export default function HomePage() {
         }}
       >
         <div className="relative z-20 max-w-5xl">
-          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#E8E6D9] drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)]">
-            АГРОХАБ 2026
+          <p className="font-sans font-bold uppercase text-xs sm:text-sm tracking-[0.25em] text-[#D4DE72] mb-5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+            АгроХаб 2026 · Истринская сыроварня
+          </p>
+          <h1 className="font-sans font-black uppercase text-4xl sm:text-6xl md:text-[72px] tracking-tighter leading-[0.9] mb-8 text-[#E8E6D9] drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)]">
+            Строим сельское хозяйство будущего
           </h1>
 
           <div className="max-w-2xl mb-8">
-            <p className="font-serif italic text-xl sm:text-2xl text-[#E8E6D9] mb-3 leading-relaxed">
-              Отдохни за делом.
-            </p>
             <p className="text-sm sm:text-base text-[#E8E6D9] leading-relaxed font-sans font-medium drop-shadow-sm">
-              Программируй роботов, дрессируй робособак, обучай нейросети прямо на действующей сыроварне
-              в Истре. В Агрохабе ты сделаешь проект с нуля до MVP под руководством заинтересованных
-              наставников.
+              Программируй роботов-андроидов, дрессируй робособак, собирай автономные тележки и
+              обучай нейросети на действующей ферме в Истре. От идеи до рабочего прототипа — за
+              одну смену.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-8">
             <Link to="/apply" className={primaryBtn}>Подать заявку</Link>
-            <Link to="/program" className={ghostBtn}>Программа смены</Link>
+            <button type="button" onClick={scrollToSchedule} className={`${ghostBtn} cursor-pointer`}>График смен</button>
+          </div>
+
+          <div className="inline-flex items-center gap-3 rounded-full bg-[#0F1108]/55 backdrop-blur-sm border border-[#D4DE72]/40 py-2.5 px-5">
+            <span className="w-2 h-2 rounded-full bg-[#D4DE72] animate-pulse shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold text-[#E8E6D9]">
+              Ближайшие смены: 9–19 и 19–29 августа · набор открыт
+            </span>
           </div>
         </div>
 
@@ -56,8 +71,116 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Польза участия ── */}
+      {/* ── Миссия ── */}
       <section className="relative pt-24 md:pt-32 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022]/58 to-[#0F1108]/58">
+        <div className="max-w-7xl mx-auto">
+          <motion.p {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold text-[11px] uppercase tracking-[0.25em] text-[#A3B18A] mb-6">
+            Зачем мы это делаем
+          </motion.p>
+          <motion.h2 {...reveal} transition={{ duration: 0.6, delay: 0.05 }} className="font-serif italic text-2xl sm:text-3xl md:text-4xl text-[#E8E6D9] leading-snug max-w-4xl mb-6">
+            {MISSION_TEXT.lead}
+          </motion.h2>
+          <motion.p {...reveal} transition={{ duration: 0.6, delay: 0.1 }} className="text-sm md:text-base text-[#E8E6D9]/80 leading-relaxed max-w-3xl mb-10">
+            {MISSION_TEXT.body}
+          </motion.p>
+          <motion.div {...reveal} transition={{ duration: 0.6, delay: 0.15 }} className="flex flex-wrap gap-2.5">
+            {MISSION_TECH.map((t) => (
+              <span
+                key={t}
+                className="py-2 px-4 rounded-full border border-[#A3B18A]/35 bg-[#344E41]/20 text-xs sm:text-sm font-semibold text-[#E8E6D9]/90"
+              >
+                {t}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── График смен ── */}
+      <section id="schedule" className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0F1108]/45 scroll-mt-24">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-10 md:mb-14">
+            <motion.h2 {...reveal} transition={{ duration: 0.6 }} className={sectionH2}>
+              График смен
+            </motion.h2>
+            <p className="mt-4 text-xs md:text-sm text-[#E8E6D9]/80 leading-relaxed font-medium">
+              Лето 2026: пять смен, каждая со своей миссией — от первых шагов андроида до полного
+              автономного цикла «теплица → магазин» без участия человека.
+            </p>
+          </div>
+
+          <div className="relative border-l border-[#E8E6D9]/15 ml-2 md:ml-3 space-y-4">
+            {SHIFTS.map((s, i) => {
+              const isOpen = s.status === "open";
+              const isNow = s.status === "now";
+              return (
+                <motion.div
+                  key={s.n}
+                  {...reveal}
+                  transition={{ duration: 0.5, delay: i * 0.05 }}
+                  className="relative pl-6 md:pl-8"
+                >
+                  <span
+                    className={`absolute -left-[6px] top-7 w-3 h-3 rounded-full border-2 ${
+                      isOpen
+                        ? "bg-[#D4DE72] border-[#D4DE72]"
+                        : isNow
+                        ? "bg-[#A3B18A] border-[#A3B18A] animate-pulse"
+                        : "bg-[#0F1108] border-[#E8E6D9]/40"
+                    }`}
+                  />
+                  <div
+                    className={`rounded-2xl p-6 md:p-7 border ${
+                      isOpen
+                        ? "bg-[#344E41]/30 border-[#D4DE72]/50"
+                        : isNow
+                        ? "bg-[#344E41]/20 border-[#A3B18A]/45"
+                        : "bg-[#E8E6D9]/[0.04] border-[#E8E6D9]/10"
+                    }`}
+                  >
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
+                      <span className={`font-sans font-black uppercase text-lg md:text-xl leading-none ${isOpen ? "text-[#D4DE72]" : "text-[#E8E6D9]"}`}>
+                        {s.n}
+                      </span>
+                      <span className="text-sm font-semibold text-[#E8E6D9]/70">{s.dates}</span>
+                      <span
+                        className={`py-1 px-3 rounded-full text-[10px] uppercase tracking-widest font-bold ${
+                          isOpen
+                            ? "bg-[#D4DE72] text-[#0F1108]"
+                            : isNow
+                            ? "bg-[#A3B18A]/25 text-[#A3B18A] border border-[#A3B18A]/40"
+                            : "bg-[#E8E6D9]/10 text-[#E8E6D9]/55"
+                        }`}
+                      >
+                        {STATUS_LABEL[s.status]}
+                      </span>
+                    </div>
+                    <h3 className="font-sans font-bold uppercase text-base md:text-lg text-[#E8E6D9] mb-2 leading-tight">
+                      {s.title}
+                    </h3>
+                    <p className={`text-sm leading-relaxed ${isOpen || isNow ? "text-[#E8E6D9]/85" : "text-[#E8E6D9]/60"}`}>
+                      {s.story}
+                    </p>
+                    {isOpen && (
+                      <div className="mt-5 flex flex-wrap gap-3">
+                        <Link to="/apply" className="py-3 px-6 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-[11px] tracking-widest rounded-full hover:bg-white transition-all">
+                          Подать заявку на смену
+                        </Link>
+                        <Link to="/program" className="py-3 px-6 border border-[#E8E6D9]/30 hover:border-[#E8E6D9]/60 text-[#E8E6D9] font-semibold uppercase text-[11px] tracking-widest rounded-full transition-all">
+                          Программа
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Польза участия ── */}
+      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0F1108]/58 to-[#0a0b05]/58">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
             Польза участия
@@ -79,30 +202,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Принципы смены ── */}
-      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0F1108]/45">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
-            Принципы смены
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {PRINCIPLES.map((p, i) => (
-              <motion.div
-                key={p.title}
-                {...reveal}
-                transition={{ duration: 0.5, delay: i * 0.06 }}
-                className="bg-[#344E41]/15 border border-[#E8E6D9]/10 rounded-2xl p-6 hover:border-[#A3B18A]/35 transition-colors"
-              >
-                <h3 className="font-sans font-bold uppercase text-base md:text-lg text-[#E8E6D9] mb-2 leading-tight">{p.title}</h3>
-                <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">{p.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── Задачи лагеря ── */}
-      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0F1108]/58 to-[#0a0b05]/58">
+      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0a0b05]/45">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl mb-10 md:mb-14">
             <motion.h2 {...reveal} transition={{ duration: 0.6 }} className={sectionH2}>
@@ -137,42 +238,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Проведённые смены ── */}
-      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0a0b05]/45">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
-            Проведённые смены
-          </motion.h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {SHIFTS.map((s, i) => (
-              <motion.div
-                key={s.n}
-                {...reveal}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-                className={`rounded-2xl p-6 border ${
-                  s.highlight
-                    ? "bg-[#344E41]/30 border-[#D4DE72]/50"
-                    : "bg-[#E8E6D9]/[0.04] border-[#E8E6D9]/10"
-                }`}
-              >
-                <div className={`font-sans font-black uppercase text-xl md:text-2xl leading-none mb-2 ${s.highlight ? "text-[#D4DE72]" : "text-[#E8E6D9]/60"}`}>
-                  {s.n}
-                </div>
-                <div className={`text-sm font-semibold ${s.highlight ? "text-[#E8E6D9]" : "text-[#E8E6D9]/50"}`}>{s.dates}</div>
-                {s.highlight && (
-                  <div className="mt-3 text-[10px] uppercase tracking-widest font-bold text-[#A3B18A]">Набор открыт</div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-          <div className="mt-12 flex justify-center">
-            <Link to="/apply" className={primaryBtn}>Подать заявку</Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── Условия участия ── */}
-      <section className="relative pt-4 pb-24 md:pb-32 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0a0b05]/58 to-[#0F1108]/58">
+      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0a0b05]/58 to-[#0F1108]/58">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
             Условия участия
@@ -198,6 +265,39 @@ export default function HomePage() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── АгроХаб — это надолго ── */}
+      <section className="relative pt-4 pb-24 md:pb-32 px-6 md:px-12 lg:px-24 bg-[#0F1108]/45">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-3xl mb-10 md:mb-14">
+            <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD]">
+              АгроХаб — это надолго
+            </motion.h2>
+            <p className="mt-4 text-xs md:text-sm text-[#E8E6D9]/80 leading-relaxed font-medium">
+              Летние смены — только начало. Мы делаем постоянную площадку, где технологии
+              приземляются в реальное сельское хозяйство.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            {FUTURE.map((f, i) => (
+              <motion.div
+                key={f.title}
+                {...reveal}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="bg-[#344E41]/15 border border-[#E8E6D9]/10 rounded-2xl p-6 md:p-7 hover:border-[#A3B18A]/35 transition-colors"
+              >
+                <div className="font-sans font-black text-[#D4DE72] text-lg mb-3">0{i + 1}</div>
+                <h3 className="font-sans font-bold uppercase text-base md:text-lg text-[#E8E6D9] mb-2 leading-tight">{f.title}</h3>
+                <p className="text-xs sm:text-sm text-[#E8E6D9]/70 leading-relaxed">{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link to="/apply" className={primaryBtn}>Подать заявку</Link>
+            <button type="button" onClick={scrollToSchedule} className={`${ghostBtn} cursor-pointer`}>График смен</button>
           </div>
         </div>
       </section>
