@@ -12,8 +12,8 @@ const card = "bg-[#344E41]/15 border border-[#E8E6D9]/10 rounded-2xl";
 const PROJECT_RESULTS = [
   {
     project: "Интеллектуальный анализ недостач",
-    result: "Собран прототип, который сводит разрозненные журналы в один поток и отсеивает ложные срабатывания — причины потерь стали видны быстрее.",
-    review: "«Думал, будет очередной дашборд. А мы реально нашли, где ферма теряет деньги, — и показали это цифрами.»",
+    result: "Собран прототип, который сводит разрозненные журналы в один поток и отсеивает ложные срабатывания, причины потерь стали видны быстрее.",
+    review: "«Думал, будет очередной дашборд. А мы реально нашли, где ферма теряет деньги и показали это цифрами.»",
     author: "Команда «Недостачи»",
   },
   {
@@ -25,7 +25,7 @@ const PROJECT_RESULTS = [
   {
     project: "Автоматизация флотационной установки",
     result: "Описан техпроцесс, налажен сбор данных с установки и собран контур автоматического управления.",
-    review: "«Разобрались в реальном оборудовании, а не в учебном стенде — это совсем другой уровень задач.»",
+    review: "«Разобрались в реальном оборудовании, а не в учебном стенде, это совсем другой уровень задач.»",
     author: "Команда автоматизации",
   },
   {
@@ -54,17 +54,17 @@ export default function ResultsPage() {
       <PageHero
         eyebrow="Что уже сделано"
         title="Результаты смен"
-        subtitle="Каждая смена — это команды, которые за считаные дни доводят реальные задачи предприятий от идеи до рабочего прототипа. Ниже — итоги проектов, видео со смен и отзывы участников."
+        subtitle="Каждая смена, это команды, которые за считаные дни доводят реальные задачи предприятий от идеи до рабочего прототипа. Ниже, итоги проектов, видео со смен и отзывы участников."
       />
 
-      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]">
+      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/80">
         <div className="max-w-6xl mx-auto space-y-20 md:space-y-24">
 
           {/* Достижения */}
           <section className="-mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              ["5", "смен проведено"],
-              ["20+", "команд-участников"],
+              ["3", "смены проведено"],
+              ["10+", "команд"],
               ["5", "проектов до прототипа"],
               ["7 млн ₽", "оборудования в работе"],
             ].map(([n, l]) => (
@@ -75,7 +75,7 @@ export default function ResultsPage() {
             ))}
           </section>
 
-          {/* Результаты проектов — таблица/карточки */}
+          {/* Результаты проектов, таблица/карточки */}
           <section>
             <h2 className="font-sans font-bold uppercase text-2xl md:text-4xl text-[#DAD7CD] mb-8">Результаты проектов</h2>
             <div className="space-y-4">
@@ -130,9 +130,9 @@ export default function ResultsPage() {
           <section>
             <h2 className="font-sans font-bold uppercase text-2xl md:text-4xl text-[#DAD7CD] mb-8">Галерея</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-              {GALLERY.map((src) => (
+              {GALLERY.map((src, i) => (
                 <div key={src} className="relative overflow-hidden rounded-2xl aspect-[4/3] border border-[#E8E6D9]/10 group">
-                  <img src={`${base}${src}`} alt="" referrerPolicy="no-referrer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img src={`${base}${src}`} alt="" referrerPolicy="no-referrer" style={{ objectPosition: i === 1 ? "center top" : "center" }} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
               ))}
             </div>

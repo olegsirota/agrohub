@@ -18,8 +18,18 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const base = import.meta.env.BASE_URL;
   return (
-    <div className="min-h-screen bg-[#0F1108] text-[#E8E6D9] font-sans overflow-x-clip selection:bg-[#A3B18A]/30 selection:text-[#E8E6D9]">
+    <div
+      className="min-h-screen text-[#E8E6D9] font-sans overflow-x-clip selection:bg-[#A3B18A]/30 selection:text-[#E8E6D9]"
+      style={{
+        backgroundColor: "#0F1108",
+        backgroundImage: `linear-gradient(rgba(15,17,8,0.86), rgba(15,17,8,0.86)), url(${base}assets/fields_bg.jpg)`,
+        backgroundSize: "520px",
+        backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <ScrollToTop />
       <Header />
       <Routes>

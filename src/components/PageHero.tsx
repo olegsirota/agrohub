@@ -11,7 +11,7 @@ export default function PageHero({
   subtitle?: string;
 }) {
   return (
-    <section className="relative pt-36 md:pt-44 pb-12 md:pb-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022] to-[#0F1108] overflow-hidden">
+    <section className="relative pt-36 md:pt-44 pb-12 md:pb-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022]/85 to-[#0F1108]/85 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {eyebrow && (
           <p className="font-sans font-bold text-[11px] uppercase tracking-[0.25em] text-[#A3B18A] mb-4">

@@ -7,8 +7,7 @@ const PARTNERS = [
   { name: "Истринская сыроварня Олега Сироты", role: "Площадка", file: "assets/cheese_logo.png" },
 ];
 
-// Узкая полупрозрачная панель партнёров. Без заголовка, без фона —
-// накладывается прямо на фото hero.
+// Узкая полупрозрачная панель партнёров. Без заголовка, без фона, // накладывается прямо на фото hero.
 export default function PartnersCarousel() {
   const base = import.meta.env.BASE_URL;
   const items = [...PARTNERS, ...PARTNERS];

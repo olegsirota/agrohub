@@ -28,8 +28,7 @@ export default function ReelModal({
 
   const base = import.meta.env.BASE_URL;
 
-  // Активное видео = то, что сейчас в ленте (считаем по позиции скролла —
-  // работает и при ручном свайпе, и при программном скролле).
+  // Активное видео = то, что сейчас в ленте (считаем по позиции скролла, // работает и при ручном свайпе, и при программном скролле).
   useEffect(() => {
     const feed = feedRef.current;
     if (!feed) return;
@@ -63,7 +62,7 @@ export default function ReelModal({
     });
   }, [active, gallery.id]);
 
-  // При открытии ленты — сброс на первое видео (без дрейфа от загрузки видео).
+  // При открытии ленты, сброс на первое видео (без дрейфа от загрузки видео).
   useEffect(() => {
     setActive(0);
     const id = requestAnimationFrame(() => {
@@ -96,7 +95,7 @@ export default function ReelModal({
         className="relative max-w-4xl w-full bg-[#12140D] border border-[#E8E6D9]/15 rounded-3xl overflow-hidden flex flex-col md:flex-row h-[90vh] md:h-[78vh] shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ПОДПИСЬ: на мобильном — компактная шапка сверху, на десктопе — левая колонка */}
+        {/* ПОДПИСЬ: на мобильном, компактная шапка сверху, на десктопе, левая колонка */}
         <div className="w-full md:w-2/5 shrink-0 p-4 pr-14 md:p-8 md:pr-8 border-b md:border-b-0 md:border-r border-[#E8E6D9]/10 flex flex-col md:justify-between bg-[#1B3022]/10">
           <div>
             {gallery.subtitle && (
