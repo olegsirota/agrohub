@@ -30,12 +30,12 @@ export default function HomePage() {
         }}
       >
         <div className="relative z-20 max-w-5xl">
-          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#0394fc] [text-shadow:0_2px_18px_rgba(232,230,217,0.6)]">
+          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#E8E6D9] drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)]">
             АГРОХАБ 2026
           </h1>
 
           <div className="max-w-2xl mb-8">
-            <p className="font-serif italic text-xl sm:text-2xl text-[#0394fc] mb-3 leading-relaxed">
+            <p className="font-serif italic text-xl sm:text-2xl text-[#D4DE72] mb-3 leading-relaxed">
               Отдохни за делом.
             </p>
             <p className="text-sm sm:text-base text-[#E8E6D9] leading-relaxed font-sans font-medium drop-shadow-sm">
@@ -125,20 +125,14 @@ export default function HomePage() {
                   Проект {i + 1}
                 </span>
                 <h3 className="font-sans font-bold uppercase text-lg md:text-xl text-[#E8E6D9] mb-3 leading-tight">{t.title}</h3>
-                <p className="text-sm text-[#E8E6D9]/70 leading-relaxed mb-6 grow">{t.desc}</p>
-                <div className="flex flex-wrap gap-2.5">
-                  <Link to="/results" className="py-2 px-4 border border-[#E8E6D9]/25 hover:border-[#E8E6D9]/60 text-[#E8E6D9] font-semibold uppercase text-[10px] tracking-widest rounded-full transition-colors">
-                    Результаты смен
-                  </Link>
-                  <Link to="/apply" className="py-2 px-4 bg-[#E8E6D9] text-[#0F1108] font-bold uppercase text-[10px] tracking-widest rounded-full hover:bg-white transition-colors">
-                    Подать заявку
-                  </Link>
-                  <Link to="/program" className="py-2 px-4 border border-[#E8E6D9]/25 hover:border-[#E8E6D9]/60 text-[#E8E6D9] font-semibold uppercase text-[10px] tracking-widest rounded-full transition-colors">
-                    Программа смены
-                  </Link>
-                </div>
+                <p className="text-sm text-[#E8E6D9]/70 leading-relaxed">{t.desc}</p>
               </motion.div>
             ))}
+          </div>
+          <div className="mt-12 flex flex-wrap justify-center gap-3">
+            <Link to="/results" className={ghostBtn}>Результаты смен</Link>
+            <Link to="/apply" className={primaryBtn}>Подать заявку</Link>
+            <Link to="/program" className={ghostBtn}>Программа смены</Link>
           </div>
         </div>
       </section>
