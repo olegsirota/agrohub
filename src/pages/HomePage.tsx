@@ -35,7 +35,7 @@ export default function HomePage() {
           </h1>
 
           <div className="max-w-2xl mb-8">
-            <p className="font-serif italic text-xl sm:text-2xl text-[#D4DE72] mb-3 leading-relaxed">
+            <p className="font-serif italic text-xl sm:text-2xl text-[#E8E6D9] mb-3 leading-relaxed">
               Отдохни за делом.
             </p>
             <p className="text-sm sm:text-base text-[#E8E6D9] leading-relaxed font-sans font-medium drop-shadow-sm">
@@ -57,7 +57,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Польза участия ── */}
-      <section className="relative pt-24 md:pt-32 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022]/85 to-[#0F1108]/85">
+      <section className="relative pt-24 md:pt-32 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1B3022]/72 to-[#0F1108]/72">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
             Польза участия
@@ -80,7 +80,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Принципы смены ── */}
-      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0F1108]/80">
+      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0F1108]/60">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
             Принципы смены
@@ -102,7 +102,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Задачи лагеря ── */}
-      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0F1108]/85 to-[#0a0b05]/85">
+      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0F1108]/72 to-[#0a0b05]/72">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-3xl mb-10 md:mb-14">
             <motion.h2 {...reveal} transition={{ duration: 0.6 }} className={sectionH2}>
@@ -138,7 +138,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Проведённые смены ── */}
-      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0a0b05]/80">
+      <section className="relative pt-4 pb-20 md:pb-28 px-6 md:px-12 lg:px-24 bg-[#0a0b05]/60">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
             Проведённые смены
@@ -172,7 +172,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Условия участия ── */}
-      <section className="relative pt-4 pb-24 md:pb-32 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0a0b05]/85 to-[#0F1108]/85">
+      <section className="relative pt-4 pb-24 md:pb-32 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#0a0b05]/72 to-[#0F1108]/72">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...reveal} transition={{ duration: 0.6 }} className="font-sans font-bold uppercase text-3xl md:text-5xl text-[#DAD7CD] mb-10 md:mb-12">
             Условия участия

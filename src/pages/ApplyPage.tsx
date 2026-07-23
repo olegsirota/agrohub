@@ -32,7 +32,7 @@ export default function ApplyPage() {
         subtitle="Заполни регистрационную форму, и мы свяжемся с тобой по деталям смены. Ниже собраны условия участия, контакты организаторов и ответы на частые вопросы."
       />
 
-      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/80">
+      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/60">
         <div className="max-w-5xl mx-auto space-y-20 md:space-y-24">
 
           {/* Инфо об участии */}
