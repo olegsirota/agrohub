@@ -30,12 +30,12 @@ export default function HomePage() {
         }}
       >
         <div className="relative z-20 max-w-5xl">
-          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#1B3022] [text-shadow:0_2px_18px_rgba(232,230,217,0.6)]">
+          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#0394fc] [text-shadow:0_2px_18px_rgba(232,230,217,0.6)]">
             АГРОХАБ 2026
           </h1>
 
           <div className="max-w-2xl mb-8">
-            <p className="font-serif italic text-xl sm:text-2xl text-[#D4DE72] mb-3 leading-relaxed">
+            <p className="font-serif italic text-xl sm:text-2xl text-[#0394fc] mb-3 leading-relaxed">
               Отдохни за делом.
             </p>
             <p className="text-sm sm:text-base text-[#E8E6D9] leading-relaxed font-sans font-medium drop-shadow-sm">
