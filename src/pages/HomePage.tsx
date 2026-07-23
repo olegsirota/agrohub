@@ -30,11 +30,8 @@ export default function HomePage() {
         }}
       >
         <div className="relative z-20 max-w-5xl">
-          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#E8E6D9]">
-            АГРОХАБ 2026 <br />
-            <span className="text-4xl sm:text-6xl md:text-[72px] block mt-4 tracking-tighter leading-[0.85]">
-              на сыроварне Олега Сироты
-            </span>
+          <h1 className="font-sans font-black uppercase text-5xl sm:text-7xl md:text-[80px] tracking-tighter leading-[0.85] mb-8 text-[#D4DE72]">
+            АГРОХАБ 2026
           </h1>
 
           <div className="max-w-2xl mb-8">

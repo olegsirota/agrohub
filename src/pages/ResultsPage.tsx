@@ -42,15 +42,8 @@ const PROJECT_RESULTS = [
   },
 ];
 
-// Реальные фотографии со смен (из доступных материалов)
-const GALLERY = [
-  "assets/learning.jpg",
-  "assets/farming.jpeg",
-  "assets/livings.jpeg",
-  "assets/robophoto.jpg",
-  "assets/robodogphoto.jpg",
-  "assets/neirophoto.jpg",
-];
+// Реальные фотографии со смены (папка «Агрохаб (Истра)»)
+const GALLERY = Array.from({ length: 9 }, (_, i) => `assets/gallery/g${i + 1}.jpg`);
 
 export default function ResultsPage() {
   const base = import.meta.env.BASE_URL;
