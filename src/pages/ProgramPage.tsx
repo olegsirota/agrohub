@@ -27,7 +27,7 @@ export default function ProgramPage() {
         subtitle="9 дней технологий и реальных инженерных вызовов на Истринской сыроварне: за смену команды разрабатывают и защищают прототипы роботизированных решений для теплиц, ферм и полей."
       />
 
-      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/60">
+      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/45">
         <div className="max-w-5xl mx-auto space-y-20 md:space-y-24">
 
           {/* Скачать документ */}
@@ -82,7 +82,7 @@ export default function ProgramPage() {
                 const isOpen = open === i;
                 return (
                   <div key={d.day} className="relative pl-6 md:pl-8 pb-3">
-                    <span className={`absolute -left-[6px] top-5 w-3 h-3 rounded-full border-2 ${isOpen ? "bg-[#D4DE72] border-[#D4DE72]" : "bg-[#0F1108]/60 border-[#A3B18A]"}`} />
+                    <span className={`absolute -left-[6px] top-5 w-3 h-3 rounded-full border-2 ${isOpen ? "bg-[#D4DE72] border-[#D4DE72]" : "bg-[#0F1108]/45 border-[#A3B18A]"}`} />
                     <div className={`${card} overflow-hidden`}>
                       <button
                         onClick={() => setOpen(isOpen ? null : i)}

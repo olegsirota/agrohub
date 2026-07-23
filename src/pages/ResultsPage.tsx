@@ -57,7 +57,7 @@ export default function ResultsPage() {
         subtitle="Каждая смена, это команды, которые за считаные дни доводят реальные задачи предприятий от идеи до рабочего прототипа. Ниже, итоги проектов, видео со смен и отзывы участников."
       />
 
-      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/60">
+      <div className="px-6 md:px-12 lg:px-24 pb-24 bg-[#0F1108]/45">
         <div className="max-w-6xl mx-auto space-y-20 md:space-y-24">
 
           {/* Достижения */}
