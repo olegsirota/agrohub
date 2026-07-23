@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import PartnersCarousel from "../components/PartnersCarousel";
-import { BENEFITS, SHIFTS, CONDITIONS, MISSION_TEXT, MISSION_TECH, FUTURE, WHO_WE_NEED } from "../data";
+import { BENEFITS, SHIFTS, CONDITIONS, MISSION_TEXT, MISSION_TECH, FUTURE, WHO_WE_NEED, WE_PROVIDE } from "../data";
 import type { ShiftMedia } from "../data";
 
 const reveal = {
@@ -299,6 +299,23 @@ export default function HomePage() {
               </motion.div>
             ))}
           </div>
+          <motion.div
+            {...reveal}
+            transition={{ duration: 0.6 }}
+            className="mt-8 rounded-3xl border border-[#D4DE72]/25 bg-[#344E41]/20 p-6 md:p-8"
+          >
+            <h3 className="font-sans font-bold uppercase text-lg md:text-xl text-[#D4DE72] mb-4">
+              Всё для проекта — с нас
+            </h3>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+              {WE_PROVIDE.map((p) => (
+                <li key={p} className="flex items-start gap-3 text-xs sm:text-sm text-[#E8E6D9]/85 leading-relaxed">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#D4DE72]" />
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
           <div className="mt-12 flex flex-wrap justify-center gap-3">
             <Link to="/results" className={ghostBtn}>Результаты смен</Link>
             <Link to="/apply" className={primaryBtn}>Подать заявку</Link>
