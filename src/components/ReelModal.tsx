@@ -182,8 +182,15 @@ export default function ReelModal({
                 <video
                   ref={(el) => {
                     videoRefs.current[idx] = el;
+                    if (el) {
+                      // iOS/Safari: атрибут muted обязателен для автозапуска
+                      el.muted = true;
+                      el.defaultMuted = true;
+                      el.setAttribute("muted", "");
+                    }
                   }}
                   src={`${base}${item.url}`}
+                  poster={`${base}${item.url.replace("videos/", "videos/posters/").replace(/\.mp4$/, ".jpg")}`}
                   className="absolute inset-0 w-full h-full object-cover"
                   muted
                   loop

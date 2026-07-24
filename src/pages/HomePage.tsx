@@ -30,9 +30,21 @@ function AmbientVideo({ src }: { src: string }) {
   React.useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // iOS/Safari: React не проставляет атрибут muted — без него запрещён автозапуск
+    el.muted = true;
+    el.defaultMuted = true;
+    el.setAttribute("muted", "");
+    const tryPlay = () => {
+      el.play().catch(() => {
+        // Автозапуск заблокирован (напр. энергосбережение) — запускаем после первого касания
+        const onGesture = () => { el.play().catch(() => {}); };
+        window.addEventListener("touchend", onGesture, { once: true });
+        window.addEventListener("click", onGesture, { once: true });
+      });
+    };
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) el.play().catch(() => {});
+        if (e.isIntersecting) tryPlay();
         else el.pause();
       },
       { threshold: 0.2 }
@@ -44,6 +56,7 @@ function AmbientVideo({ src }: { src: string }) {
     <video
       ref={ref}
       src={src}
+      poster={src.replace("videos/", "videos/posters/").replace(/\.mp4$/, ".jpg")}
       muted
       loop
       playsInline

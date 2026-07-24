@@ -26,21 +26,23 @@ export default function VideoGate({ children }: { children: React.ReactNode }) {
       setReady(true);
     };
 
-    // Полная загрузка каждого видео
+    // Предзагрузка видео; iOS не грузит видео без жеста — событие suspend считаем как «готово»
     const videos = VIDEO_URLS.map((u) => {
       const v = document.createElement("video");
       v.preload = "auto";
       v.muted = true;
-      const onOk = () => { v.removeEventListener("canplaythrough", onOk); bump(); };
+      let counted = false;
+      const onOk = () => { if (counted) return; counted = true; bump(); };
       v.addEventListener("canplaythrough", onOk, { once: true });
-      v.addEventListener("error", bump, { once: true });
+      v.addEventListener("suspend", onOk, { once: true });
+      v.addEventListener("error", onOk, { once: true });
       v.src = base + u;
       v.load();
       return v;
     });
 
-    // Страховка: не держим экран дольше 15 с
-    const t = setTimeout(reveal, 15000);
+    // Страховка: не держим экран дольше 6 с
+    const t = setTimeout(reveal, 6000);
     return () => { clearTimeout(t); videos.forEach((v) => { v.src = ""; }); };
   }, []);
 
