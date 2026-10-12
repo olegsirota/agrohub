@@ -9,3 +9,6 @@ coverage/
 
 # graphify build artifacts
 graphify-out/
+
+# рабочий контекст рекламных кабинетов — внутренние данные, репозиторий публичный
+scripts/ads/CONTEXT.md
