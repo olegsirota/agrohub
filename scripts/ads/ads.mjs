@@ -649,6 +649,123 @@ async function vkStats(flags) {
   }
 }
 
+/** Базовые метрики из элемента статистики VK (day → rows[], summary → total). */
+function vkStatBase(item) {
+  const r = item?.total ?? item?.rows?.[0] ?? {};
+  const b = r.base ?? {};
+  return { spent: Number(b.spent ?? 0), shows: Number(b.shows ?? 0), clicks: Number(b.clicks ?? 0) };
+}
+
+function vkDerive(m) {
+  return {
+    ...m,
+    ctr: m.shows ? (m.clicks / m.shows) * 100 : 0,
+    cpc: m.clicks ? m.spent / m.clicks : 0,
+    ecpm: m.shows ? (m.spent / m.shows) * 1000 : 0,
+  };
+}
+
+/**
+ * Ежедневная сводка в формате, который присылал Perplexity: по каждой группе вчера и накопленно,
+ * % выбранного дневного лимита, статусы модерации, вердикт по CPC/CTR (поле goals не учитывается).
+ */
+async function vkDaily(flags) {
+  const date = flags.date ?? daysAgo(1);
+  const planQuery = { fields: 'id,name,status,date_start,date_end,budget_limit_day' };
+  if (flags.campaign) planQuery._id__in = parseIds(flags.campaign).join(',');
+  else planQuery._status = 'active';
+  const plans = await vkGetAll('/api/v2/ad_plans.json', planQuery);
+  if (!plans.length) return console.log('Активных кампаний нет.');
+
+  const groups = await vkGetAll('/api/v2/ad_groups.json', {
+    fields: 'id,name,status,ad_plan_id,budget_limit_day,date_start',
+    _ad_plan_id__in: plans.map((p) => p.id).join(','),
+    _status__ne: 'deleted',
+  });
+  if (!groups.length) return console.log('В выбранных кампаниях нет групп.');
+  const groupIds = groups.map((g) => g.id);
+
+  let banners = [];
+  try {
+    banners = await vkGetAll('/api/v2/banners.json', { fields: 'id,ad_group_id,status,moderation_status,moderation_reasons', _ad_group_id__in: groupIds.join(','), _status__ne: 'deleted' });
+  } catch {
+    banners = [];
+  }
+
+  const earliest = [...plans, ...groups].map((x) => x.date_start).filter(Boolean).sort()[0] ?? daysAgo(90);
+  const [day, total] = await Promise.all([
+    vkRequest('GET', '/api/v2/statistics/ad_groups/day.json', { query: { id: groupIds.join(','), date_from: date, date_to: date, metrics: 'base' } }),
+    vkRequest('GET', '/api/v2/statistics/ad_groups/summary.json', { query: { id: groupIds.join(','), date_from: earliest.slice(0, 10), date_to: date, metrics: 'base' } }),
+  ]);
+  const dayBy = new Map((day?.items ?? []).map((i) => [i.id, vkDerive(vkStatBase(i))]));
+  const totBy = new Map((total?.items ?? []).map((i) => [i.id, vkDerive(vkStatBase(i))]));
+
+  const rows = groups.map((g) => {
+    const d = dayBy.get(g.id) ?? vkDerive({ spent: 0, shows: 0, clicks: 0 });
+    const t = totBy.get(g.id) ?? vkDerive({ spent: 0, shows: 0, clicks: 0 });
+    const limit = Number(g.budget_limit_day ?? 0);
+    const bn = banners.filter((b) => b.ad_group_id === g.id);
+    return { g, d, t, limit, used: limit ? (d.spent / limit) * 100 : null, banners: bn };
+  });
+
+  // Вердикт: по CPC и CTR, goals не смотрим (для клипов оно техническое).
+  const activeCpcs = rows.filter((r) => r.d.clicks >= 5).map((r) => r.d.cpc).sort((a, b) => a - b);
+  const medianCpc = activeCpcs.length ? activeCpcs[Math.floor(activeCpcs.length / 2)] : 0;
+  for (const r of rows) {
+    if (r.g.status !== 'active') r.verdict = r.g.status === 'blocked' ? 'остановлена' : r.g.status;
+    else if (r.d.spent < 1) r.verdict = 'не крутится';
+    else if (r.d.clicks < 5) r.verdict = 'мало данных';
+    else if (r.d.ctr < 0.4 || (medianCpc && r.d.cpc > medianCpc * 1.8)) r.verdict = 'снизить / остановить на проверку';
+    else if (r.t.cpc && r.d.cpc > r.t.cpc * 1.3) r.verdict = 'под наблюдением (CPC растёт)';
+    else r.verdict = 'продолжать';
+  }
+
+  if (flags.json) return console.log(JSON.stringify(rows.map(({ g, d, t, limit, used, verdict, banners: bn }) => ({ group: g, yesterday: d, total: t, limit, usedPct: used, verdict, banners: bn })), null, 2));
+
+  const planName = new Map(plans.map((p) => [p.id, p.name]));
+  console.log(`Сводка VK Рекламы за ${date}. Кампании: ${plans.map((p) => `«${p.name}» (${p.id})`).join(', ')}\n`);
+  const pct = (v) => (v === null ? '—' : `${v.toFixed(0)}%`);
+  printTable(rows, [
+    { title: 'Группа', get: (r) => `${r.g.name} [${r.g.id}]` },
+    { title: 'Кампания', get: (r) => planName.get(r.g.ad_plan_id) ?? r.g.ad_plan_id },
+    { title: 'Лимит/д', align: 'right', get: (r) => (r.limit ? fmtMoney(r.limit) : '—') },
+    { title: 'Вчера ₽', align: 'right', get: (r) => fmtMoney(r.d.spent) },
+    { title: '% лим.', align: 'right', get: (r) => pct(r.used) },
+    { title: 'Показы', align: 'right', get: (r) => fmtInt(r.d.shows) },
+    { title: 'Клики', align: 'right', get: (r) => fmtInt(r.d.clicks) },
+    { title: 'CTR', align: 'right', get: (r) => `${r.d.ctr.toFixed(2)}%` },
+    { title: 'CPC', align: 'right', get: (r) => fmtMoney(r.d.cpc) },
+    { title: 'eCPM', align: 'right', get: (r) => fmtMoney(r.d.ecpm) },
+    { title: 'Накопл. ₽', align: 'right', get: (r) => fmtMoney(r.t.spent) },
+    { title: 'Накопл. клики', align: 'right', get: (r) => fmtInt(r.t.clicks) },
+    { title: 'Накопл. CTR', align: 'right', get: (r) => `${r.t.ctr.toFixed(2)}%` },
+    { title: 'Накопл. CPC', align: 'right', get: (r) => fmtMoney(r.t.cpc) },
+    { title: 'Вердикт', get: (r) => r.verdict },
+  ]);
+
+  const sum = (key, src) => rows.reduce((a, r) => a + r[src][key], 0);
+  const dTot = vkDerive({ spent: sum('spent', 'd'), shows: sum('shows', 'd'), clicks: sum('clicks', 'd') });
+  const tTot = vkDerive({ spent: sum('spent', 't'), shows: sum('shows', 't'), clicks: sum('clicks', 't') });
+  console.log(`\nИтого за ${date}: ${fmtMoney(dTot.spent)} ₽, ${fmtInt(dTot.shows)} показов, ${fmtInt(dTot.clicks)} кликов, CTR ${dTot.ctr.toFixed(2)}%, CPC ${fmtMoney(dTot.cpc)} ₽, eCPM ${fmtMoney(dTot.ecpm)} ₽`);
+  console.log(`Накопленно с ${earliest.slice(0, 10)}: ${fmtMoney(tTot.spent)} ₽, ${fmtInt(tTot.shows)} показов, ${fmtInt(tTot.clicks)} кликов, CTR ${tTot.ctr.toFixed(2)}%, CPC ${fmtMoney(tTot.cpc)} ₽`);
+
+  const active = rows.filter((r) => r.g.status === 'active').length;
+  if (banners.length) {
+    const byStatus = {};
+    for (const b of banners) {
+      const k = `${b.status ?? '?'}/${b.moderation_status ?? '?'}`;
+      byStatus[k] = (byStatus[k] ?? 0) + 1;
+    }
+    const rejected = banners.filter((b) => /reject|banned|not_allowed/i.test(String(b.moderation_status ?? b.status ?? '')));
+    console.log(`Группы: активных ${active} из ${rows.length}. Объявления: ${banners.length} (${Object.entries(byStatus).map(([k, v]) => `${k}: ${v}`).join(', ')})${rejected.length ? `; ОТКЛОНЕНО: ${rejected.map((b) => b.id).join(', ')}` : '; отклонённых нет'}.`);
+  } else {
+    console.log(`Группы: активных ${active} из ${rows.length}. Статусы объявлений недоступны.`);
+  }
+  const attention = rows.filter((r) => /снизить|наблюдением/.test(r.verdict));
+  console.log(attention.length ? `Требуют внимания: ${attention.map((r) => `«${r.g.name}» — ${r.verdict}`).join('; ')}.` : 'Все группы в норме.');
+  console.log('Бюджеты не менялись. Поле goals не учитывалось (для клипов оно техническое).');
+}
+
 async function vkRaw(positional) {
   const [method, endpoint, json] = positional;
   if (!method || !endpoint) fail("использование: vk raw <GET|POST|DELETE> </api/v2/...> ['<JSON body>']");
@@ -686,6 +803,9 @@ async function runVk(cmd, flags, positional) {
       return vkMassStatus(flags.groups ? 'groups' : 'plans', 'active', flags, positional);
     case 'budget':
       return vkBudget(flags, positional);
+    case 'daily':
+    case 'summary':
+      return vkDaily(flags);
     case 'raw':
       return vkRaw(positional);
     case 'check':
@@ -722,6 +842,7 @@ VK Реклама:
   groups [id кампании] [--all] [--json]         группы объявлений
   stats [--from Д --to Д] [--by-day] [--type ad_plans|ad_groups|banners] [--ids 1,2] [--metrics base,events] [--json]
                                                 статистика (по умолчанию 7 дней по сегодня)
+  daily [--campaign 28397756] [--date Д] [--json]   ежедневная сводка: вчера и накопленно по группам, % лимита, модерация, вердикт
   stop <ids> [--groups]                         остановить кампании (или группы)
   start <ids> [--groups]                        запустить кампании (или группы)
   budget <id> --day <руб> [--total <руб>] [--groups]   бюджет
