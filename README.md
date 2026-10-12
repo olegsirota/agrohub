@@ -70,6 +70,19 @@ npm run process-logos
 
 Скрипт `scripts/process-logos.mjs` убирает белый фон, ужимает и кладёт результат в `public/assets/`.
 
+## Реклама: Яндекс Директ и VK Реклама
+
+В `scripts/ads/` лежит консольная утилита для управления кампаниями из терминала и из Claude Code:
+статистика, остановка/запуск, бюджеты, ставки — для Яндекс Директа и VK Рекламы.
+
+```bash
+npm run ads -- check              # проверить доступ
+npm run ads -- direct campaigns   # кампании Директа
+npm run ads -- vk stats           # статистика VK за 7 дней
+```
+
+Как получить токены и что прописать в окружении — в [scripts/ads/README.md](scripts/ads/README.md).
+
 ## Деплой на GitHub Pages
 
 Собранная статика (`dist/`) публикуется в ветку **`gh-pages`**:
